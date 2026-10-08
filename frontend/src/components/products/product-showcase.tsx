@@ -42,7 +42,13 @@ export function ProductShowcase({ products }: { products: Product[] }) {
             >
               <div className="relative aspect-[4/5] overflow-hidden">
                 <Image
-                  src={product.imageUrl}
+                  src={
+                    index === 0
+                      ? "/images/thalu-makeup.png"
+                      : index === 1
+                        ? "/images/thalu-beauty.png"
+                        : product.imageUrl
+                  }
                   alt={product.name}
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"

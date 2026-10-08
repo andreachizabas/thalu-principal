@@ -60,7 +60,7 @@ export function HomeSections() {
         <div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-[0.9fr_1.1fr] md:gap-10">
           <Reveal>
             <motion.div
-              className="mx-auto aspect-[4/5] max-h-[30rem] max-w-sm rounded-[2rem] bg-[url('https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80')] bg-cover bg-center shadow-2xl shadow-ink/20 md:max-h-none md:max-w-none"
+              className="mx-auto aspect-[4/5] max-h-[30rem] max-w-sm rounded-[2rem] bg-[url('/images/thalu-beauty.png')] bg-cover bg-center shadow-2xl shadow-ink/20 md:max-h-none md:max-w-none"
               animate={reduceMotion ? undefined : { y: [0, -10, 0] }}
               transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
             />

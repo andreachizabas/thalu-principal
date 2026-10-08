@@ -7,6 +7,12 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden bg-[#efb4ae] text-ink">
+      <motion.div
+        className="pointer-events-none absolute right-[-4rem] top-24 z-0 h-64 w-64 bg-[url('/images/thalu-blossom.png')] bg-contain bg-center bg-no-repeat opacity-55 sm:h-80 sm:w-80"
+        animate={reduceMotion ? undefined : { y: [0, -12, 0], rotate: [0, 3, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        aria-hidden="true"
+      />
       <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 py-10 text-center sm:py-12 lg:min-h-[calc(100svh-5rem)] lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-16 lg:text-left">
         <div className="mx-auto max-w-3xl lg:mx-0">
           <motion.h1
@@ -52,21 +58,21 @@ export function Hero() {
             animate={reduceMotion ? undefined : { y: [0, -10, 0] }}
             transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="h-full rounded-[1.45rem] bg-[url('https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80')] bg-cover bg-center" />
+            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-makeup.png')] bg-cover bg-center" />
           </motion.div>
           <motion.div
             className="absolute right-2 top-0 h-80 w-56 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-xl md:right-12 md:h-[26rem] md:w-72"
             animate={reduceMotion ? undefined : { y: [0, 12, 0], rotate: [0, -1.3, 0] }}
             transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="h-full rounded-[1.45rem] bg-[url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80')] bg-cover bg-center" />
+            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-beauty.png')] bg-cover bg-center" />
           </motion.div>
           <motion.div
             className="absolute bottom-4 left-0 h-72 w-56 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-2xl md:left-16 md:w-72"
             animate={reduceMotion ? undefined : { y: [0, -14, 0], rotate: [0, 1.2, 0] }}
             transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="h-full rounded-[1.45rem] bg-[url('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=900&q=80')] bg-cover bg-center" />
+            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-makeup.png')] bg-cover bg-center" />
           </motion.div>
           <motion.div
             className="absolute bottom-12 right-0 max-w-56 rounded-2xl bg-ink p-5 text-ivory shadow-2xl"
