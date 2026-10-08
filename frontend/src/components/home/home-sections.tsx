@@ -55,13 +55,14 @@ export function HomeSections() {
               Nuestra historia
             </p>
             <h2 className="mt-3 font-display text-5xl font-semibold leading-tight md:text-6xl">
-              Una marca para comprar con calma, confianza y acompanamiento.
+              Belleza que se elige con confianza, calma y amor propio.
             </h2>
             <p className="mt-6 text-lg leading-8 text-ink/76">
-              ThaLu By Andrea Chizabas nace como un espacio administrable para
-              seleccionar productos de belleza con criterio, cercania y respeto
-              por la autenticidad de cada clienta. El contenido definitivo de la
-              historia quedara editable desde el panel administrativo.
+              En ThaLu queremos que cada clienta sienta que llega a un lugar
+              donde puede confiar. Aqui no se trata de cambiar quien eres, sino
+              de acompanarte a reconocer lo valiosa que ya eres, elegir con
+              tranquilidad y vivir tus rituales de belleza como un momento
+              propio, seguro y lleno de cuidado.
             </p>
           </Reveal>
         </div>
