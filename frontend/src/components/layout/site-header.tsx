@@ -26,14 +26,12 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-salmon/20 bg-ink/92 text-ivory shadow-lg shadow-black/20 backdrop-blur-xl">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
         <Link href="/" className="group" aria-label="Ir al inicio">
-          <span
-            className="relative block h-12 w-14 font-display text-[2.65rem] font-semibold leading-none text-salmon"
-            aria-hidden="true"
-          >
-            <span className="absolute right-0 top-0">T</span>
-            <span className="absolute bottom-0 left-0">L</span>
+          <span className="block font-display text-3xl font-bold leading-none text-salmon">
+            ThaLu
           </span>
-          <span className="sr-only">ThaLu By Andrea Chizabas</span>
+          <span className="block text-[0.68rem] uppercase tracking-[0.24em] text-ivory/70">
+            By Andrea Chizabas
+          </span>
         </Link>
 
         <nav className="hidden items-center gap-7 text-sm font-medium text-ivory/72 lg:flex">
