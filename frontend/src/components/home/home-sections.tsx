@@ -46,7 +46,7 @@ export function HomeSections() {
                   <h3 className="font-display text-4xl font-semibold text-salmon">
                     {category.title}
                   </h3>
-                  <p className="mt-5 text-base leading-7 text-ivory/72">
+                  <p className="mt-5 text-base font-medium leading-7 text-ivory/85">
                     {category.text}
                   </p>
                 </motion.article>
@@ -66,7 +66,7 @@ export function HomeSections() {
             />
           </Reveal>
           <Reveal>
-            <p className="text-center text-sm font-bold uppercase tracking-[0.24em] text-ink/70 lg:text-left">
+            <p className="text-center text-sm font-bold uppercase tracking-[0.24em] text-ink/88 lg:text-left">
               Nuestra historia
             </p>
             <StoryTypewriter />

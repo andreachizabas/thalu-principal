@@ -22,7 +22,7 @@ export function ProductShowcase({ products }: { products: Product[] }) {
               Seleccion curada para rituales reales.
             </h2>
           </div>
-          <p className="mx-auto max-w-md text-base leading-7 text-ink/65 md:mx-0">
+          <p className="mx-auto max-w-md text-base font-medium leading-7 text-ink/82 md:mx-0">
             Datos de muestra conectados al contrato de API. Al aplicar
             migraciones, PostgreSQL sera el origen del catalogo.
           </p>
@@ -74,12 +74,12 @@ export function ProductShowcase({ products }: { products: Product[] }) {
                 <h3 className="mt-2 min-h-16 font-display text-3xl font-semibold leading-none text-ink">
                   {product.name}
                 </h3>
-                <p className="mt-3 min-h-16 text-sm leading-6 text-ink/74">
+                <p className="mt-3 min-h-16 text-sm font-medium leading-6 text-ink/86">
                   {product.shortDescription}
                 </p>
                 <div className="mt-5 flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-xs uppercase tracking-[0.18em] text-ink/55">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink/75">
                       {product.brand}
                     </p>
                     <p className="text-lg font-bold text-ink">

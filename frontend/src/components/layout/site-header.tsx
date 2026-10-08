@@ -29,7 +29,7 @@ export function SiteHeader() {
           <span className="block font-display text-3xl font-bold leading-none text-salmon">
             ThaLú
           </span>
-          <span className="block text-[0.68rem] uppercase tracking-[0.24em] text-ivory/70">
+          <span className="block text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-ivory/88">
             By Andrea Chizabas
           </span>
         </Link>

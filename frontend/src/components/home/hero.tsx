@@ -33,7 +33,7 @@ export function Hero() {
             initial={reduceMotion ? false : { opacity: 0, y: 20 }}
             animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ delay: 0.24, duration: 0.75 }}
-            className="mx-auto mt-6 max-w-2xl text-base leading-7 text-ink/70 sm:text-lg sm:leading-8 lg:mx-0"
+            className="mx-auto mt-6 max-w-2xl text-base font-semibold leading-7 text-ink/88 sm:text-lg sm:leading-8 lg:mx-0"
           >
             Descubre productos seleccionados para acompanarte en tus rituales
             de autocuidado.
@@ -86,7 +86,7 @@ export function Hero() {
             transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
           >
             <p className="font-display text-3xl leading-none">ThaLú</p>
-            <p className="mt-2 text-sm leading-5 text-ivory/70">
+            <p className="mt-2 text-sm font-medium leading-5 text-ivory/88">
               Maquillaje, skincare y cuidado capilar con seleccion curada.
             </p>
           </motion.div>

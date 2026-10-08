@@ -342,7 +342,7 @@ export function StoryTypewriter() {
           return (
             <p
               key={segment.text}
-              className="mt-5 text-base leading-7 text-ink/78 sm:text-lg sm:leading-8"
+              className="mt-5 text-base font-medium leading-7 text-ink/90 sm:text-lg sm:leading-8"
             >
               {visibleText}
               {isPlaying && isActiveSegment(index, effectiveCharacterCount) ? (
