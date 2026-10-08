@@ -1,7 +1,8 @@
 "use client";
 
+import { Volume2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
 type StorySegment = {
   kind: "title" | "paragraph" | "signature";
@@ -134,14 +135,64 @@ export function StoryTypewriter() {
 
   return (
     <div ref={storyRef} className="text-center lg:text-left">
-      <div className="mx-auto flex w-full max-w-xs flex-col items-center rounded-[1.5rem] border border-ink/20 bg-ink px-6 py-5 text-center text-ivory shadow-xl shadow-ink/20 lg:mx-0">
-        <span className="text-xs font-bold uppercase tracking-[0.28em] text-salmon">
-          Sube el volumen
+      <motion.button
+        className="relative mx-auto flex w-full max-w-xs items-center justify-center gap-4 overflow-hidden rounded-[1.5rem] border border-ink/20 bg-ink px-6 py-5 text-center text-ivory shadow-xl shadow-ink/20 lg:mx-0"
+        type="button"
+        aria-label="Sube el volumen para escuchar la historia de ThaLu"
+        onClick={playStory}
+        initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+        whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+        whileHover={reduceMotion ? undefined : { y: -2, scale: 1.01 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        <motion.span
+          className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(233,155,145,0.28),transparent_42%)]"
+          animate={
+            reduceMotion
+              ? undefined
+              : { opacity: [0.55, 0.95, 0.55], scale: [1, 1.04, 1] }
+          }
+          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <span className="relative grid h-14 w-14 shrink-0 place-items-center rounded-full bg-salmon text-ink">
+          <motion.span
+            className="absolute inset-0 rounded-full border border-salmon"
+            animate={
+              reduceMotion
+                ? undefined
+                : { opacity: [0.55, 0], scale: [1, 1.55] }
+            }
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+          />
+          <Volume2 size={24} />
         </span>
-        <span className="mt-2 text-sm leading-6 text-ivory/70">
-          La historia comenzara automaticamente al llegar a esta seccion.
+        <span className="relative text-left">
+          <span className="block text-xs font-bold uppercase tracking-[0.28em] text-salmon">
+            Sube el volumen
+          </span>
+          <span className="mt-2 flex h-5 items-end gap-1" aria-hidden="true">
+            {[0.35, 0.7, 1, 0.55].map((height, index) => (
+              <motion.span
+                key={height}
+                className="w-1.5 rounded-full bg-ivory/80"
+                style={{ height: `${height * 1.25}rem` }}
+                animate={
+                  reduceMotion
+                    ? undefined
+                    : { scaleY: [0.55, 1, 0.65], opacity: [0.55, 1, 0.7] }
+                }
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.12,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            ))}
+          </span>
         </span>
-      </div>
+      </motion.button>
 
       <audio
         ref={audioRef}
@@ -220,7 +271,7 @@ export function StoryTypewriter() {
       <p className="mt-3 text-sm text-ink/58">
         {isPlaying
           ? "La historia se esta reproduciendo."
-          : "Si tu navegador bloquea el audio automatico, sube el volumen y recarga esta seccion."}
+          : "La historia empieza al llegar a esta seccion."}
       </p>
     </div>
   );
