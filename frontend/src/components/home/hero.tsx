@@ -58,7 +58,7 @@ export function Hero() {
             animate={reduceMotion ? undefined : { y: [0, -10, 0] }}
             transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-makeup.png')] bg-cover bg-center" />
+            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-lipstick.png')] bg-cover bg-center" />
           </motion.div>
           <motion.div
             className="absolute right-2 top-0 h-80 w-56 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-xl md:right-12 md:h-[26rem] md:w-72"
@@ -72,7 +72,7 @@ export function Hero() {
             animate={reduceMotion ? undefined : { y: [0, -14, 0], rotate: [0, 1.2, 0] }}
             transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-makeup.png')] bg-cover bg-center" />
+            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-cream.png')] bg-cover bg-center" />
           </motion.div>
           <motion.div
             className="absolute bottom-12 right-0 max-w-56 rounded-2xl bg-ink p-5 text-ivory shadow-2xl"

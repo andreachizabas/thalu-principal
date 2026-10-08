@@ -44,9 +44,9 @@ export function ProductShowcase({ products }: { products: Product[] }) {
                 <Image
                   src={
                     index === 0
-                      ? "/images/thalu-makeup.png"
+                      ? "/images/thalu-lipstick.png"
                       : index === 1
-                        ? "/images/thalu-beauty.png"
+                        ? "/images/thalu-cream.png"
                         : product.imageUrl
                   }
                   alt={product.name}
