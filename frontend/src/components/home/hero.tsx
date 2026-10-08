@@ -1,9 +1,29 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import { useState } from "react";
+
+const heroImages = [
+  "/images/thalu-lipstick.png",
+  "/images/thalu-serum.png",
+  "/images/thalu-cream.png",
+  "/images/thalu-makeup.png",
+  "/images/thalu-beauty.png",
+];
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
+  const [imageIndexes, setImageIndexes] = useState([0, 1, 2]);
+
+  function rotateImage(panelIndex: number) {
+    setImageIndexes((currentIndexes) =>
+      currentIndexes.map((currentIndex, index) =>
+        index === panelIndex
+          ? (currentIndex + 1) % heroImages.length
+          : currentIndex,
+      ),
+    );
+  }
 
   return (
     <section className="relative overflow-hidden bg-salmon text-ink">
@@ -59,27 +79,57 @@ export function Hero() {
           transition={{ delay: 0.2, duration: 0.9 }}
           className="relative mx-auto min-h-[360px] w-full max-w-sm sm:min-h-[440px] lg:max-w-none"
         >
-          <motion.div
+          <motion.button
+            type="button"
+            aria-label="Cambiar imagen de maquillaje"
+            onClick={() => rotateImage(0)}
             className="absolute left-4 top-6 h-64 w-48 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-2xl shadow-ink/30 md:h-80 md:w-60"
             animate={reduceMotion ? undefined : { y: [0, -10, 0] }}
             transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-lipstick.png')] bg-cover bg-center" />
-          </motion.div>
-          <motion.div
+            <motion.div
+              key={heroImages[imageIndexes[0]]}
+              className="h-full rounded-[1.45rem] bg-cover bg-center"
+              style={{ backgroundImage: `url(${heroImages[imageIndexes[0]]})` }}
+              initial={reduceMotion ? false : { opacity: 0.35 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.35 }}
+            />
+          </motion.button>
+          <motion.button
+            type="button"
+            aria-label="Cambiar imagen de skincare"
+            onClick={() => rotateImage(1)}
             className="absolute right-2 top-0 h-80 w-56 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-xl md:right-12 md:h-[26rem] md:w-72"
             animate={reduceMotion ? undefined : { y: [0, 12, 0], rotate: [0, -1.3, 0] }}
             transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-serum.png')] bg-cover bg-center" />
-          </motion.div>
-          <motion.div
+            <motion.div
+              key={heroImages[imageIndexes[1]]}
+              className="h-full rounded-[1.45rem] bg-cover bg-center"
+              style={{ backgroundImage: `url(${heroImages[imageIndexes[1]]})` }}
+              initial={reduceMotion ? false : { opacity: 0.35 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.35 }}
+            />
+          </motion.button>
+          <motion.button
+            type="button"
+            aria-label="Cambiar imagen de cuidado capilar"
+            onClick={() => rotateImage(2)}
             className="absolute bottom-4 left-0 h-72 w-56 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-2xl md:left-16 md:w-72"
             animate={reduceMotion ? undefined : { y: [0, -14, 0], rotate: [0, 1.2, 0] }}
             transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-cream.png')] bg-cover bg-center" />
-          </motion.div>
+            <motion.div
+              key={heroImages[imageIndexes[2]]}
+              className="h-full rounded-[1.45rem] bg-cover bg-center"
+              style={{ backgroundImage: `url(${heroImages[imageIndexes[2]]})` }}
+              initial={reduceMotion ? false : { opacity: 0.35 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.35 }}
+            />
+          </motion.button>
           <motion.div
             className="absolute bottom-12 right-0 max-w-56 rounded-2xl bg-ink p-5 text-ivory shadow-2xl"
             animate={reduceMotion ? undefined : { scale: [1, 1.035, 1] }}
