@@ -7,7 +7,7 @@ const fallbackProducts: Product[] = [
     id: "demo-labial-rosa",
     slug: "labial-satinado-rosa",
     name: "Labial satinado Rosa Suave",
-    brand: "ThaLu Curated",
+    brand: "ThaLú Curated",
     category: "Maquillaje",
     priceCents: 4800000,
     currency: "COP",

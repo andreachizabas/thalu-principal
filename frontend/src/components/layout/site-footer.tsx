@@ -3,7 +3,7 @@ export function SiteFooter() {
     <footer className="bg-ink px-5 py-12 text-ivory">
       <div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1.2fr_0.8fr_0.8fr]">
         <div>
-          <p className="font-display text-4xl font-semibold">ThaLu</p>
+          <p className="font-display text-4xl font-semibold">ThaLú</p>
           <p className="mt-3 max-w-md text-sm leading-6 text-ivory/70">
             Belleza colombiana seleccionada para rituales de autocuidado,
             maquillaje, skincare y cuidado capilar.

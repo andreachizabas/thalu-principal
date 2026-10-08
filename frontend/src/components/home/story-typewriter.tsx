@@ -12,11 +12,11 @@ type StorySegment = {
 const storySegments: StorySegment[] = [
   {
     kind: "title",
-    text: "ThaLu, un espacio creado para ti. ♡",
+    text: "ThaLú, un espacio creado para ti. ♡",
   },
   {
     kind: "paragraph",
-    text: "ThaLu nació de un sueño: crear un espacio donde cada mujer encuentre inspiración para cuidarse, consentirse y resaltar su belleza a su manera.",
+    text: "ThaLú nació de un sueño: crear un espacio donde cada mujer encuentre inspiración para cuidarse, consentirse y resaltar su belleza a su manera.",
   },
   {
     kind: "paragraph",
@@ -28,7 +28,7 @@ const storySegments: StorySegment[] = [
   },
   {
     kind: "signature",
-    text: "ThaLu — Tu belleza, tu esencia, tu momento.",
+    text: "ThaLú — Tu belleza, tu esencia, tu momento.",
   },
 ];
 
@@ -260,7 +260,7 @@ export function StoryTypewriter() {
       <motion.button
         className="relative mx-auto flex w-full max-w-xs items-center justify-center gap-4 overflow-hidden rounded-[1.5rem] border border-ink/20 bg-ink px-6 py-5 text-center text-ivory shadow-xl shadow-ink/20 lg:mx-0"
         type="button"
-        aria-label="Sube el volumen para escuchar la historia de ThaLu"
+        aria-label="Sube el volumen para escuchar la historia de ThaLú"
         onClick={() => playStory(true)}
         initial={reduceMotion ? false : { opacity: 0, y: 12 }}
         whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}

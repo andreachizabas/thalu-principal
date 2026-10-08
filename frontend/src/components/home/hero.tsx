@@ -38,7 +38,7 @@ export function Hero() {
               Descubre nuestros productos
             </a>
             <a className="button-secondary" href="#historia">
-              Conoce ThaLu
+              Conoce ThaLú
             </a>
           </motion.div>
         </div>
@@ -73,7 +73,7 @@ export function Hero() {
             animate={reduceMotion ? undefined : { scale: [1, 1.035, 1] }}
             transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
           >
-            <p className="font-display text-3xl leading-none">ThaLu</p>
+            <p className="font-display text-3xl leading-none">ThaLú</p>
             <p className="mt-2 text-sm leading-5 text-ivory/70">
               Maquillaje, skincare y cuidado capilar con seleccion curada.
             </p>

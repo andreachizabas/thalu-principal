@@ -32,7 +32,7 @@ export function CartDrawer() {
             <div className="flex items-center justify-between border-b border-salmon/20 p-5">
               <div>
                 <p className="text-xs font-bold uppercase tracking-[0.22em] text-salmon">
-                  ThaLu
+                  ThaLú
                 </p>
                 <h2 className="font-display text-4xl font-semibold text-ivory">
                   Tu carrito

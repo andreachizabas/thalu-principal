@@ -19,14 +19,14 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "ThaLu By Andrea Chizabas | Belleza colombiana",
+  title: "ThaLú By Andrea Chizabas | Belleza colombiana",
   description:
     "Boutique colombiana de maquillaje, skincare y cuidado capilar para rituales de autocuidado.",
   icons: {
     icon: "/favicon.svg",
   },
   openGraph: {
-    title: "ThaLu By Andrea Chizabas",
+    title: "ThaLú By Andrea Chizabas",
     description: "Tu belleza, tu esencia, tu momento.",
     locale: "es_CO",
     type: "website",

@@ -27,7 +27,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
         <Link href="/" className="group" aria-label="Ir al inicio">
           <span className="block font-display text-3xl font-bold leading-none text-salmon">
-            ThaLu
+            ThaLú
           </span>
           <span className="block text-[0.68rem] uppercase tracking-[0.24em] text-ivory/70">
             By Andrea Chizabas
