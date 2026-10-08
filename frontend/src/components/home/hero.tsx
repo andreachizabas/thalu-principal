@@ -65,7 +65,7 @@ export function Hero() {
             animate={reduceMotion ? undefined : { y: [0, 12, 0], rotate: [0, -1.3, 0] }}
             transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-beauty.png')] bg-cover bg-center" />
+            <div className="h-full rounded-[1.45rem] bg-[url('/images/thalu-serum.png')] bg-cover bg-center" />
           </motion.div>
           <motion.div
             className="absolute bottom-4 left-0 h-72 w-56 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-2xl md:left-16 md:w-72"

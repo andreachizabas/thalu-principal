@@ -46,7 +46,7 @@ export function ProductShowcase({ products }: { products: Product[] }) {
                     index === 0
                       ? "/images/thalu-lipstick.png"
                       : index === 1
-                        ? "/images/thalu-cream.png"
+                        ? "/images/thalu-serum.png"
                         : product.imageUrl
                   }
                   alt={product.name}
