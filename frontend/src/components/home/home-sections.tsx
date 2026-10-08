@@ -55,27 +55,14 @@ export function HomeSections() {
               Nuestra historia
             </p>
             <h2 className="mt-3 font-display text-5xl font-semibold leading-tight md:text-6xl">
-              Bienvenida a ThaLu: belleza inspirada en el amor.
+              ThaLu nace para mujeres que reconocen su valor.
             </h2>
-            <div className="mt-6 space-y-5 text-lg leading-8 text-ink/76">
-              <p>
-                Al crear ThaLu, quise disenar un espacio exclusivo para ti. Un
-                lugar donde cada producto capilar, cada gota de skincare y cada
-                toque de maquillaje no busquen cambiar quien eres, sino celebrar
-                la obra de arte que ya eres.
-              </p>
-              <p>
-                Quiero que sepas algo importante: no necesitas que nadie te haga
-                sentir hermosa, porque tu brillo ya esta ahi. Mi mision es darte
-                herramientas para que lo cuides, lo potencies y lo disfrutes.
-                Cuidar de tu cabello y de tu piel no es vanidad; es un acto de
-                amor propio que puedes regalarte cada dia.
-              </p>
-              <p className="font-semibold text-ink">
-                Gracias por hacernos parte de tu tocador y de tu historia.
-                Bienvenida a ThaLu: belleza creada para hacerte brillar.
-              </p>
-            </div>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-ink/76">
+              Inspiramos a cada mujer a comenzar su dia recordando que ya es
+              valiosa, unica y poderosa. Nuestros productos no buscan cambiarte:
+              acompanan tu brillo, elevan tus rituales y celebran la belleza
+              que nace cuando te eliges a ti misma.
+            </p>
           </Reveal>
         </div>
       </section>
