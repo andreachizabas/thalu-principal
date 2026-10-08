@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/animations/reveal";
+import { StoryTypewriter } from "@/components/home/story-typewriter";
 
 const categories = [
   {
@@ -54,15 +55,7 @@ export function HomeSections() {
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-ink/70">
               Nuestra historia
             </p>
-            <h2 className="mt-3 font-display text-5xl font-semibold leading-tight md:text-6xl">
-              ThaLu nace para acompanar tus rituales de amor propio.
-            </h2>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-ink/76">
-              Reunimos productos de belleza, cuidado personal y marcas
-              seleccionadas para ayudarte a crear rutinas que te motiven cada
-              dia. Cuidar tu piel, tu cabello y tus unas tambien es una forma de
-              recordarte que mereces tiempo, atencion y confianza en ti misma.
-            </p>
+            <StoryTypewriter />
           </Reveal>
         </div>
       </section>
