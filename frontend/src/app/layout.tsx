@@ -1,18 +1,25 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Montserrat, Playfair_Display, Sacramento } from "next/font/google";
 import { Suspense } from "react";
 import { Providers } from "./providers";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-display",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
   weight: ["500", "600", "700"],
+});
+
+const sacramento = Sacramento({
+  variable: "--font-sacramento",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -38,7 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="es-CO"
       suppressHydrationWarning
-      className={`${inter.variable} ${cormorant.variable} scroll-smooth antialiased`}
+      className={`${montserrat.variable} ${playfair.variable} ${sacramento.variable} scroll-smooth antialiased`}
     >
       <body>
         <Suspense fallback={null}>

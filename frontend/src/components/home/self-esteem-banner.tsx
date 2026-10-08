@@ -42,7 +42,7 @@ export function SelfEsteemBanner({ message }: { message: SelfEsteemMessage }) {
         <p className="text-sm font-bold uppercase tracking-[0.28em]">
           Un momento para ti
         </p>
-        <blockquote className="mt-4 font-display text-4xl font-semibold leading-tight md:text-6xl">
+        <blockquote className="mt-4 font-script text-5xl leading-[0.9] md:text-7xl">
           &ldquo;{message.message}&rdquo;
         </blockquote>
       </motion.div>

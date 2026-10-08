@@ -12,14 +12,15 @@
   --color-ink: #111111;
   --color-salmon: #e99b91;
   --color-rosewood: #c97974;
-  --font-sans: var(--font-inter);
-  --font-display: var(--font-display);
+  --font-sans: var(--font-montserrat);
+  --font-display: var(--font-playfair);
+  --font-script: var(--font-sacramento);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
 
 ::selection {
