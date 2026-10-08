@@ -55,13 +55,13 @@ export function HomeSections() {
               Nuestra historia
             </p>
             <h2 className="mt-3 font-display text-5xl font-semibold leading-tight md:text-6xl">
-              ThaLu nace para mujeres que reconocen su valor.
+              ThaLu nace para acompanar tus rituales de amor propio.
             </h2>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-ink/76">
-              Inspiramos a cada mujer a comenzar su dia recordando que ya es
-              valiosa, unica y poderosa. Nuestros productos no buscan cambiarte:
-              acompanan tu brillo, elevan tus rituales y celebran la belleza
-              que nace cuando te eliges a ti misma.
+              Reunimos productos de belleza, cuidado personal y marcas
+              seleccionadas para ayudarte a crear rutinas que te motiven cada
+              dia. Cuidar tu piel, tu cabello y tus unas tambien es una forma de
+              recordarte que mereces tiempo, atencion y confianza en ti misma.
             </p>
           </Reveal>
         </div>
