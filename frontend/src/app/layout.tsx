@@ -37,6 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="es-CO"
+      suppressHydrationWarning
       className={`${inter.variable} ${cormorant.variable} scroll-smooth antialiased`}
     >
       <body>
