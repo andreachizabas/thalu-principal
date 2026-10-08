@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
 type StorySegment = {
@@ -37,7 +37,7 @@ function getFullText() {
 
 const fullStoryText = getFullText();
 const fallbackAudioDuration = 47.57;
-const typingSpeedFactor = 0.9;
+const typingSpeedFactor = 0.82;
 
 function getSegmentStart(segmentIndex: number) {
   return storySegments
@@ -63,10 +63,53 @@ export function StoryTypewriter() {
   const reduceMotion = useReducedMotion();
   const [characterCount, setCharacterCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const storyRef = useRef<HTMLDivElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasStartedRef = useRef(false);
   const effectiveCharacterCount = reduceMotion
     ? fullStoryText.length
     : characterCount;
+
+  const playStory = useCallback(() => {
+    const audio = audioRef.current;
+
+    setCharacterCount(0);
+    setIsPlaying(true);
+
+    if (!audio) {
+      return;
+    }
+
+    audio.pause();
+    audio.currentTime = 0;
+    audio.volume = 0.96;
+
+    void audio.play().catch(() => {
+      setIsPlaying(false);
+    });
+  }, []);
+
+  useEffect(() => {
+    const story = storyRef.current;
+
+    if (!story || reduceMotion) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasStartedRef.current) {
+          hasStartedRef.current = true;
+          playStory();
+        }
+      },
+      { threshold: 0.55 },
+    );
+
+    observer.observe(story);
+
+    return () => observer.disconnect();
+  }, [playStory, reduceMotion]);
 
   function syncTextWithAudio() {
     const audio = audioRef.current;
@@ -84,48 +127,26 @@ export function StoryTypewriter() {
     setCharacterCount(Math.floor(fullStoryText.length * progress));
   }
 
-  function playStory() {
-    const audio = audioRef.current;
-
-    setCharacterCount(0);
-    setIsPlaying(true);
-
-    if (!audio) {
-      return;
-    }
-
-    audio.pause();
-    audio.currentTime = 0;
-    audio.volume = 0.96;
-
-    void audio.play().catch(() => {
-      setIsPlaying(false);
-    });
-  }
-
   function finishStory() {
     setCharacterCount(fullStoryText.length);
     setIsPlaying(false);
   }
 
   return (
-    <div className="text-center lg:text-left">
-      <button
-        className="mx-auto flex w-full max-w-xs flex-col items-center rounded-[1.5rem] border border-ink/20 bg-ink px-6 py-5 text-center text-ivory shadow-xl shadow-ink/20 transition-transform hover:-translate-y-0.5 lg:mx-0"
-        type="button"
-        onClick={playStory}
-      >
+    <div ref={storyRef} className="text-center lg:text-left">
+      <div className="mx-auto flex w-full max-w-xs flex-col items-center rounded-[1.5rem] border border-ink/20 bg-ink px-6 py-5 text-center text-ivory shadow-xl shadow-ink/20 lg:mx-0">
         <span className="text-xs font-bold uppercase tracking-[0.28em] text-salmon">
           Sube el volumen
         </span>
         <span className="mt-2 text-sm leading-6 text-ivory/70">
-          Toca este aviso para iniciar la historia de ThaLu.
+          La historia comenzara automaticamente al llegar a esta seccion.
         </span>
-      </button>
+      </div>
 
       <audio
         ref={audioRef}
         preload="auto"
+        playsInline
         onTimeUpdate={syncTextWithAudio}
         onEnded={finishStory}
         onPlay={() => {
@@ -199,7 +220,7 @@ export function StoryTypewriter() {
       <p className="mt-3 text-sm text-ink/58">
         {isPlaying
           ? "La historia se esta reproduciendo."
-          : "Cuando quieras repetirla, vuelve a tocar el aviso."}
+          : "Si tu navegador bloquea el audio automatico, sube el volumen y recarga esta seccion."}
       </p>
     </div>
   );
