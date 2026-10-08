@@ -71,13 +71,26 @@ export function HomeSections({
       </section>
 
       <section className="bg-ink px-5 py-16 text-ivory sm:py-20">
-        <div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-[1fr_auto]">
+        <div className="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-[0.85fr_1.15fr]">
           <Reveal>
-            <p className="text-sm font-bold uppercase tracking-[0.24em] text-salmon">Belleza a tu puerta</p>
-            <h2 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight text-salmon sm:text-5xl">ThaLú llega hasta ti.</h2>
-            <p className="mt-4 max-w-xl text-base font-medium leading-7 text-ivory/80">Descubre nuestros servicios de uñas y cabello a domicilio en Manizales y Villamaría.</p>
+            <p className="text-sm font-bold uppercase tracking-[0.24em] text-salmon">Nuestros productos</p>
+            <h2 className="mt-3 max-w-xl font-display text-4xl font-semibold leading-tight text-salmon sm:text-5xl">Selección para tus rituales de autocuidado.</h2>
+            <p className="mt-4 max-w-xl text-base font-medium leading-7 text-ivory/80">Maquillaje, skincare y cuidado capilar seleccionados para acompañarte cada día.</p>
+            <Link href="#productos" className="button-accent mt-6">Descubrir productos</Link>
           </Reveal>
-          <Link href="/servicios-a-domicilio" className="button-accent">Conoce nuestros servicios</Link>
+          <Reveal>
+            <div className="grid min-h-64 grid-cols-3 gap-3">
+              <div className="overflow-hidden rounded-[1.5rem] border-4 border-ink bg-salmon shadow-xl shadow-black/25">
+                <img src="/images/thalu-lipstick.png" alt="Producto de maquillaje ThaLú" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+              </div>
+              <div className="mt-8 overflow-hidden rounded-[1.5rem] border-4 border-ink bg-salmon shadow-xl shadow-black/25">
+                <img src="/images/thalu-serum.png" alt="Producto de skincare ThaLú" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+              </div>
+              <div className="overflow-hidden rounded-[1.5rem] border-4 border-ink bg-salmon shadow-xl shadow-black/25">
+                <img src="/images/thalu-hair-mask.png" alt="Producto de cuidado capilar ThaLú" className="h-full w-full object-cover transition-transform duration-500 hover:scale-105" />
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
