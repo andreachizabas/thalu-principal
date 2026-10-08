@@ -261,7 +261,7 @@ export function StoryTypewriter() {
         className="relative mx-auto flex w-full max-w-xs items-center justify-center gap-4 overflow-hidden rounded-[1.5rem] border border-ink/20 bg-ink px-6 py-5 text-center text-ivory shadow-xl shadow-ink/20 lg:mx-0"
         type="button"
         aria-label="Sube el volumen para escuchar la historia de ThaLú"
-        onClick={() => playStory(true)}
+        onClick={() => playStory(hasCompletedRef.current)}
         initial={reduceMotion ? false : { opacity: 0, y: 12 }}
         whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
         whileHover={reduceMotion ? undefined : { y: -2, scale: 1.01 }}
