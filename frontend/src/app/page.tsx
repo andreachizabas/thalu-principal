@@ -1,9 +1,8 @@
 import { Hero } from "@/components/home/hero";
-import { HomeSections } from "@/components/home/home-sections";
+import { CatalogExperience } from "@/components/home/catalog-experience";
 import { SelfEsteemBanner } from "@/components/home/self-esteem-banner";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { ProductShowcase } from "@/components/products/product-showcase";
 import { getFeaturedProducts, getSelfEsteemMessage } from "@/services/catalog";
 
 export default async function Home() {
@@ -17,8 +16,7 @@ export default async function Home() {
       <SiteHeader />
       <main>
         <Hero />
-        <HomeSections />
-        <ProductShowcase products={products} />
+        <CatalogExperience products={products} />
         <SelfEsteemBanner message={message} />
       </main>
       <SiteFooter />

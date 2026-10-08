@@ -19,7 +19,13 @@ const categories = [
   },
 ];
 
-export function HomeSections() {
+export function HomeSections({
+  selectedCategory,
+  onCategorySelect,
+}: {
+  selectedCategory: string;
+  onCategorySelect: (category: string) => void;
+}) {
   const reduceMotion = useReducedMotion();
 
   return (
@@ -37,8 +43,15 @@ export function HomeSections() {
           <div className="mt-10 grid gap-4 md:grid-cols-3">
             {categories.map((category) => (
               <Reveal key={category.title}>
-                <motion.article
-                  className="min-h-64 rounded-[1.5rem] border border-ink/10 bg-ink p-7 text-ivory shadow-xl shadow-ink/20"
+                <motion.button
+                  type="button"
+                  aria-pressed={selectedCategory === category.title}
+                  onClick={() => onCategorySelect(category.title)}
+                  className={`min-h-64 w-full cursor-pointer rounded-[1.5rem] border p-7 text-left text-ivory shadow-xl shadow-ink/20 transition-colors ${
+                    selectedCategory === category.title
+                      ? "border-salmon bg-[#2b2020]"
+                      : "border-ink/10 bg-ink"
+                  }`}
                   whileHover={reduceMotion ? undefined : { y: -8, scale: 1.02 }}
                   whileTap={reduceMotion ? undefined : { scale: 0.99 }}
                   transition={{ type: "spring", stiffness: 260, damping: 22 }}
@@ -49,7 +62,7 @@ export function HomeSections() {
                   <p className="mt-5 text-base font-medium leading-7 text-ivory/85">
                     {category.text}
                   </p>
-                </motion.article>
+                </motion.button>
               </Reveal>
             ))}
           </div>

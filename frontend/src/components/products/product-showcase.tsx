@@ -7,8 +7,35 @@ import { formatCop } from "@/services/catalog";
 import { useCartStore } from "@/stores/cart-store";
 import type { Product } from "@/types/catalog";
 
-export function ProductShowcase({ products }: { products: Product[] }) {
+function getProductImage(product: Product) {
+  if (product.category === "Maquillaje") {
+    return "/images/thalu-lipstick.png";
+  }
+
+  if (product.category === "Skincare") {
+    return "/images/thalu-serum.png";
+  }
+
+  if (product.category === "Cuidado capilar") {
+    return "/images/thalu-hair-mask.png";
+  }
+
+  return product.imageUrl;
+}
+
+export function ProductShowcase({
+  products,
+  selectedCategory = "Todos",
+  onCategoryChange,
+}: {
+  products: Product[];
+  selectedCategory?: string;
+  onCategoryChange?: (category: string) => void;
+}) {
   const addItem = useCartStore((state) => state.addItem);
+  const visibleProducts = selectedCategory === "Todos"
+    ? products
+    : products.filter((product) => product.category === selectedCategory);
 
   return (
     <section id="productos" className="bg-salmon px-5 py-16 text-center text-ink sm:py-20 md:text-left">
@@ -28,8 +55,28 @@ export function ProductShowcase({ products }: { products: Product[] }) {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {products.map((product, index) => (
+        <div className="mt-8 flex flex-wrap gap-2 md:mt-10">
+          {["Todos", "Maquillaje", "Skincare", "Cuidado capilar"].map(
+            (category) => (
+              <button
+                key={category}
+                type="button"
+                aria-pressed={selectedCategory === category}
+                onClick={() => onCategoryChange?.(category)}
+                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                  selectedCategory === category
+                    ? "bg-ink text-ivory"
+                    : "bg-ivory/65 text-ink hover:bg-ivory"
+                }`}
+              >
+                {category}
+              </button>
+            ),
+          )}
+        </div>
+
+        <div className="mt-7 grid gap-5 md:grid-cols-3">
+          {visibleProducts.map((product, index) => (
             <motion.article
               key={product.id}
               initial={{ opacity: 0, y: 28 }}
@@ -42,15 +89,7 @@ export function ProductShowcase({ products }: { products: Product[] }) {
             >
               <div className="relative aspect-[4/5] overflow-hidden">
                 <Image
-                  src={
-                    index === 0
-                      ? "/images/thalu-lipstick.png"
-                      : index === 1
-                        ? "/images/thalu-serum.png"
-                        : index === 2
-                          ? "/images/thalu-hair-mask.png"
-                          : product.imageUrl
-                  }
+                  src={getProductImage(product)}
                   alt={product.name}
                   fill
                   sizes="(min-width: 768px) 33vw, 100vw"
@@ -98,6 +137,12 @@ export function ProductShowcase({ products }: { products: Product[] }) {
             </motion.article>
           ))}
         </div>
+
+        {visibleProducts.length === 0 ? (
+          <p className="mt-8 rounded-2xl border border-ink/20 bg-ivory/55 p-6 text-center font-medium text-ink/80">
+            Pronto tendremos nuevos productos en esta categoría.
+          </p>
+        ) : null}
 
         <div className="mt-8 flex items-center gap-3 rounded-2xl border border-dashed border-ink/25 bg-[#edada8]/45 p-5 text-sm text-ink/70">
           <ShoppingBag className="shrink-0 text-rosewood" size={20} />
