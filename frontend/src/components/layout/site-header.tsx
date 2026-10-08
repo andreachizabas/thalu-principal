@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu, Search, ShoppingBag, X } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useState } from "react";
 import { getCartCount, useCartStore } from "@/stores/cart-store";
@@ -16,6 +17,7 @@ const navigation = [
 
 export function SiteHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
   const items = useCartStore((state) => state.items);
   const openCart = useCartStore((state) => state.openCart);
   const count = getCartCount(items);
@@ -70,22 +72,36 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {isMenuOpen ? (
-        <nav className="border-t border-salmon/20 bg-ink px-5 py-5 lg:hidden">
-          <div className="mx-auto grid max-w-7xl gap-4">
-            {navigation.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-base font-medium text-ivory"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </nav>
-      ) : null}
+      <AnimatePresence>
+        {isMenuOpen ? (
+          <motion.nav
+            className="border-t border-salmon/20 bg-ink px-5 py-5 lg:hidden"
+            initial={reduceMotion ? false : { opacity: 0, y: -8 }}
+            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: -8 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+          >
+            <div className="mx-auto grid max-w-7xl gap-4">
+              {navigation.map((item, index) => (
+                <motion.div
+                  key={item.href}
+                  initial={reduceMotion ? false : { opacity: 0, x: -10 }}
+                  animate={reduceMotion ? undefined : { opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.035, duration: 0.2 }}
+                >
+                  <Link
+                    href={item.href}
+                    className="block text-base font-medium text-ivory"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.nav>
+        ) : null}
+      </AnimatePresence>
     </header>
   );
 }

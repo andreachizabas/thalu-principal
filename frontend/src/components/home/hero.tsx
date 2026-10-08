@@ -9,7 +9,7 @@ export function Hero() {
     <section className="relative overflow-hidden bg-salmon text-ink">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(250,245,241,0.32),transparent_30%),radial-gradient(circle_at_80%_10%,rgba(17,17,17,0.22),transparent_34%)]" />
       <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-ink/35 to-transparent" />
-      <div className="relative mx-auto grid min-h-[calc(100svh-5rem)] max-w-7xl items-center gap-10 px-5 py-12 text-center lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-16 lg:text-left">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 py-10 text-center sm:py-12 lg:min-h-[calc(100svh-5rem)] lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-16 lg:text-left">
         <div className="mx-auto max-w-3xl lg:mx-0">
           <motion.h1
             initial={reduceMotion ? false : { opacity: 0, y: 24 }}
@@ -49,19 +49,35 @@ export function Hero() {
           transition={{ delay: 0.2, duration: 0.9 }}
           className="relative mx-auto min-h-[360px] w-full max-w-sm sm:min-h-[440px] lg:max-w-none"
         >
-          <div className="absolute left-4 top-6 h-64 w-48 rounded-[2rem] bg-ink shadow-2xl shadow-ink/30 md:h-80 md:w-60" />
-          <div className="absolute right-2 top-0 h-80 w-56 rounded-[2rem] border border-ink/20 bg-ivory/22 p-4 shadow-xl backdrop-blur md:right-12 md:h-[26rem] md:w-72">
+          <motion.div
+            className="absolute left-4 top-6 h-64 w-48 rounded-[2rem] bg-ink shadow-2xl shadow-ink/30 md:h-80 md:w-60"
+            animate={reduceMotion ? undefined : { y: [0, -10, 0] }}
+            transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute right-2 top-0 h-80 w-56 rounded-[2rem] border border-ink/20 bg-ivory/22 p-4 shadow-xl backdrop-blur md:right-12 md:h-[26rem] md:w-72"
+            animate={reduceMotion ? undefined : { y: [0, 12, 0], rotate: [0, -1.3, 0] }}
+            transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut" }}
+          >
             <div className="h-full rounded-[1.35rem] bg-[url('https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=900&q=80')] bg-cover bg-center" />
-          </div>
-          <div className="absolute bottom-4 left-0 h-72 w-56 rounded-[2rem] border border-ivory/30 bg-ink/82 p-4 shadow-2xl backdrop-blur md:left-16 md:w-72">
+          </motion.div>
+          <motion.div
+            className="absolute bottom-4 left-0 h-72 w-56 rounded-[2rem] border border-ivory/30 bg-ink/82 p-4 shadow-2xl backdrop-blur md:left-16 md:w-72"
+            animate={reduceMotion ? undefined : { y: [0, -14, 0], rotate: [0, 1.2, 0] }}
+            transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
+          >
             <div className="h-full rounded-[1.35rem] bg-[url('https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=900&q=80')] bg-cover bg-center" />
-          </div>
-          <div className="absolute bottom-12 right-0 max-w-56 rounded-2xl bg-ink p-5 text-ivory shadow-2xl">
+          </motion.div>
+          <motion.div
+            className="absolute bottom-12 right-0 max-w-56 rounded-2xl bg-ink p-5 text-ivory shadow-2xl"
+            animate={reduceMotion ? undefined : { scale: [1, 1.035, 1] }}
+            transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
+          >
             <p className="font-display text-3xl leading-none">ThaLu</p>
             <p className="mt-2 text-sm leading-5 text-ivory/70">
               Maquillaje, skincare y cuidado capilar con seleccion curada.
             </p>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

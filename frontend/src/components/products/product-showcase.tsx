@@ -36,6 +36,8 @@ export function ProductShowcase({ products }: { products: Product[] }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ delay: index * 0.08, duration: 0.55 }}
+              whileHover={{ y: -8, scale: 1.015 }}
+              whileTap={{ scale: 0.995 }}
               className="group overflow-hidden rounded-[1.5rem] border border-salmon/25 bg-salmon text-ink shadow-xl shadow-black/30"
             >
               <div className="relative aspect-[4/5] overflow-hidden">

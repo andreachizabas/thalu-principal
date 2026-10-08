@@ -267,12 +267,6 @@ export function StoryTypewriter() {
           </p>
         ) : null}
       </div>
-
-      <p className="mt-3 text-sm text-ink/58">
-        {isPlaying
-          ? "La historia se esta reproduciendo."
-          : "La historia empieza al llegar a esta seccion."}
-      </p>
     </div>
   );
 }
