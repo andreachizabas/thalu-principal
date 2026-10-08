@@ -8,12 +8,18 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden bg-salmon text-ink">
       <motion.div
-        className="pointer-events-none absolute right-[-4rem] top-24 z-0 h-64 w-64 bg-[url('/images/thalu-blossom.png')] bg-contain bg-center bg-no-repeat opacity-55 sm:h-80 sm:w-80"
+        className="pointer-events-none absolute right-[-1rem] top-10 z-0 h-[24rem] w-[24rem] bg-[url('/images/thalu-blossom.png')] bg-contain bg-center bg-no-repeat opacity-85 sm:h-[30rem] sm:w-[30rem] lg:right-[-4rem]"
         animate={reduceMotion ? undefined : { y: [0, -12, 0], rotate: [0, 3, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         aria-hidden="true"
       />
-      <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 py-10 text-center sm:py-12 lg:min-h-[calc(100svh-5rem)] lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-16 lg:text-left">
+      <motion.div
+        className="pointer-events-none absolute bottom-[-5rem] left-[-6rem] z-0 h-64 w-64 -scale-x-100 bg-[url('/images/thalu-blossom.png')] bg-contain bg-center bg-no-repeat opacity-65 sm:h-80 sm:w-80"
+        animate={reduceMotion ? undefined : { y: [0, 10, 0], rotate: [0, -4, 0] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        aria-hidden="true"
+      />
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-10 px-5 py-10 text-center sm:py-12 lg:min-h-[calc(100svh-5rem)] lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-16 lg:text-left">
         <div className="mx-auto max-w-3xl lg:mx-0">
           <motion.h1
             initial={reduceMotion ? false : { opacity: 0, y: 24 }}
