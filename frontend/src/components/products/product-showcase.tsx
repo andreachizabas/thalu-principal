@@ -55,10 +55,6 @@ export function ProductShowcase({
               Seleccion curada para rituales reales.
             </h2>
           </div>
-          <p className="mx-auto max-w-md text-base font-medium leading-7 text-ink/82 md:mx-0">
-            Datos de muestra conectados al contrato de API. Al aplicar
-            migraciones, PostgreSQL sera el origen del catalogo.
-          </p>
         </div>
 
         {showFilters ? (
