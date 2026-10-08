@@ -5,7 +5,7 @@ import { useState } from "react";
 import { submitServiceRequest } from "@/services/beauty-services";
 import type { BeautyService, ServiceRequestPayload } from "@/types/services";
 
-const whatsappUrlBase = process.env.NEXT_PUBLIC_WHATSAPP_URL ?? "https://whatsapp.com/dl/";
+const whatsappUrlBase = process.env.NEXT_PUBLIC_WHATSAPP_URL ?? "https://wa.me/573122347352";
 const today = new Date().toISOString().slice(0, 10);
 
 function contactUrl(message: string) {

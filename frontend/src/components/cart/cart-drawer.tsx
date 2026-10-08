@@ -5,7 +5,7 @@ import { ArrowLeft, CheckCircle2, KeyRound, Minus, Plus, Smartphone, Trash2, X }
 import { useState } from "react";
 import { formatCop } from "@/services/catalog";
 
-const whatsappBaseUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL ?? "https://whatsapp.com/dl/";
+const whatsappBaseUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL ?? "https://wa.me/573122347352";
 import { getCartSubtotal, useCartStore } from "@/stores/cart-store";
 
 export function CartDrawer() {
