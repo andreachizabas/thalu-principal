@@ -273,6 +273,17 @@ export function getCategoryProducts(category: string): Product[] {
   return categoryProducts[category] ?? [];
 }
 
+export function getAllCatalogProducts(): Product[] {
+  return Array.from(
+    new Map(
+      [...fallbackProducts, ...Object.values(categoryProducts).flat()].map((product) => [
+        product.id,
+        product,
+      ]),
+    ).values(),
+  );
+}
+
 export async function getSelfEsteemMessage(): Promise<SelfEsteemMessage> {
   try {
     const response = await fetch(`${apiBaseUrl}/api/v1/self-esteem-message`, {
