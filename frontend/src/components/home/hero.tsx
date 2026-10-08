@@ -2,33 +2,10 @@
 
 import { motion, useReducedMotion } from "motion/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
-
-const heroImages = [
-  "/images/thalu-lipstick.png",
-  "/images/thalu-serum.png",
-  "/images/thalu-cream.png",
-  "/images/thalu-makeup.png",
-  "/images/thalu-beauty.png",
-];
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
   const router = useRouter();
-  const [deckStep, setDeckStep] = useState(0);
-  const [isDeckRotating, setIsDeckRotating] = useState(false);
-
-  function advanceDeck() {
-    if (isDeckRotating) {
-      return;
-    }
-
-    setIsDeckRotating(true);
-    window.setTimeout(() => {
-      setDeckStep((currentStep) => (currentStep + 1) % heroImages.length);
-      setIsDeckRotating(false);
-    }, 325);
-  }
 
   return (
     <section className="relative overflow-hidden bg-salmon text-ink">
@@ -82,119 +59,25 @@ export function Hero() {
           initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
           animate={reduceMotion ? undefined : { opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.9 }}
-          className="relative mx-auto min-h-[360px] w-full max-w-sm sm:min-h-[440px] lg:max-w-none"
+          className="relative mx-auto w-full max-w-sm lg:max-w-none"
         >
-          <motion.button
-            type="button"
-            aria-label="Cambiar imagen de maquillaje"
-            onClick={advanceDeck}
-            className="absolute left-4 top-6 h-64 w-48 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-2xl shadow-ink/30 md:h-80 md:w-60"
-            animate={
-              reduceMotion
-                ? undefined
-                : {
-                    y: [0, -10, 0],
-                    rotateY: isDeckRotating ? [0, 180, 360] : 0,
-                  }
-            }
-            transition={{
-              y: { duration: 4.8, repeat: Infinity, ease: "easeInOut" },
-              rotateY: { duration: 0.65, ease: "easeInOut" },
-            }}
-            style={{ transformStyle: "preserve-3d", perspective: 900 }}
-          >
-            <motion.div
-              key={heroImages[deckStep % heroImages.length]}
-              className="h-full rounded-[1.45rem] bg-cover bg-center"
-              style={{
-                backgroundImage: `url(${heroImages[deckStep % heroImages.length]})`,
-              }}
-              initial={reduceMotion ? false : { opacity: 0.35 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.35 }}
-            />
-          </motion.button>
-          <motion.button
-            type="button"
-            aria-label="Cambiar imagen de skincare"
-            onClick={advanceDeck}
-            className="absolute right-2 top-0 h-80 w-56 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-xl md:right-12 md:h-[26rem] md:w-72"
-            animate={
-              reduceMotion
-                ? undefined
-                : {
-                    y: [0, 12, 0],
-                    rotate: [0, -1.3, 0],
-                    rotateY: isDeckRotating ? [0, 180, 360] : 0,
-                  }
-            }
-            transition={{
-              y: { duration: 5.6, repeat: Infinity, ease: "easeInOut" },
-              rotate: { duration: 5.6, repeat: Infinity, ease: "easeInOut" },
-              rotateY: { duration: 0.65, ease: "easeInOut" },
-            }}
-            style={{ transformStyle: "preserve-3d", perspective: 900 }}
-          >
-            <motion.div
-              key={heroImages[(deckStep + 1) % heroImages.length]}
-              className="h-full rounded-[1.45rem] bg-cover bg-center"
-              style={{
-                backgroundImage: `url(${heroImages[(deckStep + 1) % heroImages.length]})`,
-              }}
-              initial={reduceMotion ? false : { opacity: 0.35 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.35 }}
-            />
-          </motion.button>
-          <motion.button
-            type="button"
-            aria-label="Cambiar imagen de cuidado capilar"
-            onClick={advanceDeck}
-            className="absolute bottom-4 left-0 h-72 w-56 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-2xl md:left-16 md:w-72"
-            animate={
-              reduceMotion
-                ? undefined
-                : {
-                    y: [0, -14, 0],
-                    rotate: [0, 1.2, 0],
-                    rotateY: isDeckRotating ? [0, 180, 360] : 0,
-                  }
-            }
-            transition={{
-              y: { duration: 6.2, repeat: Infinity, ease: "easeInOut" },
-              rotate: { duration: 6.2, repeat: Infinity, ease: "easeInOut" },
-              rotateY: { duration: 0.65, ease: "easeInOut" },
-            }}
-            style={{ transformStyle: "preserve-3d", perspective: 900 }}
-          >
-            <motion.div
-              key={heroImages[(deckStep + 2) % heroImages.length]}
-              className="h-full rounded-[1.45rem] bg-cover bg-center"
-              style={{
-                backgroundImage: `url(${heroImages[(deckStep + 2) % heroImages.length]})`,
-              }}
-              initial={reduceMotion ? false : { opacity: 0.35 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.35 }}
-            />
-          </motion.button>
           <motion.div
-            className="absolute bottom-12 right-0 max-w-56 cursor-pointer rounded-2xl bg-ink p-5 text-ivory shadow-2xl"
-            role="link"
-            tabIndex={0}
-            onClick={() => router.push("/servicios-a-domicilio")}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                router.push("/servicios-a-domicilio");
-              }
-            }}
-            animate={reduceMotion ? undefined : { scale: [1, 1.035, 1] }}
-            transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
+            className="relative overflow-hidden rounded-[2rem] bg-ink p-6 text-ivory shadow-2xl shadow-ink/30 sm:p-8"
+            animate={reduceMotion ? undefined : { y: [0, -8, 0] }}
+            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <p className="font-display text-3xl leading-none text-salmon">ThaLú</p>
-            <p className="mt-2 text-sm font-medium leading-5 text-ivory/88">
-              Uñas y cuidado capilar a domicilio en Manizales y Villamaría.
-            </p>
+            <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[url('/images/thalu-blossom.png')] bg-contain bg-center bg-no-repeat opacity-70" aria-hidden="true" />
+            <div className="relative z-10">
+              <p className="text-xs font-bold uppercase tracking-[0.24em] text-salmon">Belleza a tu puerta</p>
+              <h2 className="mt-4 max-w-xs font-display text-4xl font-semibold leading-[0.98] text-salmon sm:text-5xl">Tu momento de belleza, sin salir de casa.</h2>
+              <p className="mt-5 text-sm font-medium leading-6 text-ivory/80">Llevamos a tu hogar servicios de uñas y cuidado capilar en Manizales y Villamaría.</p>
+              <div className="mt-6 grid grid-cols-2 gap-2 text-xs font-bold text-ink">
+                {['Manicure', 'Semipermanentes', 'Press On', 'Cepillado y planchado'].map((service) => (
+                  <span key={service} className="rounded-xl bg-salmon px-3 py-3">{service}</span>
+                ))}
+              </div>
+              <button type="button" onClick={() => router.push("/servicios-a-domicilio")} className="button-accent mt-7 w-full">Agenda tu domicilio</button>
+            </div>
           </motion.div>
         </motion.div>
       </div>
