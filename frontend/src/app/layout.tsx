@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   description:
     "Boutique colombiana de maquillaje, skincare y cuidado capilar para rituales de autocuidado.",
   icons: {
-    icon: "/favicon.svg",
+    icon: "/logo-favicon.png",
   },
   openGraph: {
     title: "ThaLú By Andrea Chizabas",
