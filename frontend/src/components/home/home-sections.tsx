@@ -19,13 +19,13 @@ const categories = [
 export function HomeSections() {
   return (
     <>
-      <section className="bg-ink px-5 py-20 text-ivory">
+      <section className="bg-ink px-5 py-16 text-center text-ivory sm:py-20 md:text-left">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-salmon">
               Categorias
             </p>
-            <h2 className="mt-3 max-w-3xl font-display text-5xl font-semibold leading-tight text-ivory md:text-6xl">
+            <h2 className="mx-auto mt-3 max-w-3xl font-display text-4xl font-semibold leading-tight text-ivory sm:text-5xl md:mx-0 md:text-6xl">
               Tres mundos de autocuidado en una boutique cercana.
             </h2>
           </Reveal>
@@ -46,13 +46,13 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section id="historia" className="bg-rosewood px-5 py-20 text-ink">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-[0.9fr_1.1fr]">
+      <section id="historia" className="bg-rosewood px-5 py-16 text-ink sm:py-20">
+        <div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-[0.9fr_1.1fr] md:gap-10">
           <Reveal>
-            <div className="aspect-[4/5] rounded-[2rem] bg-[url('https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80')] bg-cover bg-center" />
+            <div className="mx-auto aspect-[4/5] max-h-[30rem] max-w-sm rounded-[2rem] bg-[url('https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80')] bg-cover bg-center md:max-h-none md:max-w-none" />
           </Reveal>
           <Reveal>
-            <p className="text-sm font-bold uppercase tracking-[0.24em] text-ink/70">
+            <p className="text-center text-sm font-bold uppercase tracking-[0.24em] text-ink/70 lg:text-left">
               Nuestra historia
             </p>
             <StoryTypewriter />

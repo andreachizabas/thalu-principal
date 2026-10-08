@@ -9,13 +9,13 @@ export function Hero() {
     <section className="relative overflow-hidden bg-salmon text-ink">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(250,245,241,0.32),transparent_30%),radial-gradient(circle_at_80%_10%,rgba(17,17,17,0.22),transparent_34%)]" />
       <div className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-ink/35 to-transparent" />
-      <div className="relative mx-auto grid min-h-[calc(100svh-5rem)] max-w-7xl items-center gap-12 px-5 py-16 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
-        <div className="max-w-3xl">
+      <div className="relative mx-auto grid min-h-[calc(100svh-5rem)] max-w-7xl items-center gap-10 px-5 py-12 text-center lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-16 lg:text-left">
+        <div className="mx-auto max-w-3xl lg:mx-0">
           <motion.h1
             initial={reduceMotion ? false : { opacity: 0, y: 24 }}
             animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ delay: 0.12, duration: 0.8 }}
-            className="mt-7 max-w-4xl font-display text-6xl font-bold leading-[0.95] text-ink md:text-8xl"
+            className="mx-auto mt-4 max-w-4xl font-display text-5xl font-bold leading-[0.95] text-ink sm:text-6xl md:text-8xl lg:mx-0"
           >
             Tu belleza, tu esencia, tu momento.
           </motion.h1>
@@ -23,7 +23,7 @@ export function Hero() {
             initial={reduceMotion ? false : { opacity: 0, y: 20 }}
             animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ delay: 0.24, duration: 0.75 }}
-            className="mt-6 max-w-2xl text-lg leading-8 text-ink/70"
+            className="mx-auto mt-6 max-w-2xl text-base leading-7 text-ink/70 sm:text-lg sm:leading-8 lg:mx-0"
           >
             Descubre productos seleccionados para acompanarte en tus rituales
             de autocuidado.
@@ -32,7 +32,7 @@ export function Hero() {
             initial={reduceMotion ? false : { opacity: 0, y: 18 }}
             animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             transition={{ delay: 0.34, duration: 0.65 }}
-            className="mt-8 flex flex-col gap-3 sm:flex-row"
+            className="mx-auto mt-8 flex max-w-sm flex-col gap-3 sm:flex-row lg:mx-0 lg:max-w-none"
           >
             <a className="button-primary" href="#productos">
               Descubre nuestros productos
@@ -47,7 +47,7 @@ export function Hero() {
           initial={reduceMotion ? false : { opacity: 0, scale: 0.96 }}
           animate={reduceMotion ? undefined : { opacity: 1, scale: 1 }}
           transition={{ delay: 0.2, duration: 0.9 }}
-          className="relative min-h-[440px]"
+          className="relative mx-auto min-h-[360px] w-full max-w-sm sm:min-h-[440px] lg:max-w-none"
         >
           <div className="absolute left-4 top-6 h-64 w-48 rounded-[2rem] bg-ink shadow-2xl shadow-ink/30 md:h-80 md:w-60" />
           <div className="absolute right-2 top-0 h-80 w-56 rounded-[2rem] border border-ink/20 bg-ivory/22 p-4 shadow-xl backdrop-blur md:right-12 md:h-[26rem] md:w-72">

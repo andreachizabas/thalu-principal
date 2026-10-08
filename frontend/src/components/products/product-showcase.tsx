@@ -11,18 +11,18 @@ export function ProductShowcase({ products }: { products: Product[] }) {
   const addItem = useCartStore((state) => state.addItem);
 
   return (
-    <section id="productos" className="bg-ink px-5 py-20 text-ivory">
+    <section id="productos" className="bg-ink px-5 py-16 text-center text-ivory sm:py-20 md:text-left">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-salmon">
               Productos destacados
             </p>
-            <h2 className="mt-3 max-w-2xl font-display text-5xl font-semibold text-ivory md:text-6xl">
+            <h2 className="mx-auto mt-3 max-w-2xl font-display text-4xl font-semibold text-ivory sm:text-5xl md:mx-0 md:text-6xl">
               Seleccion curada para rituales reales.
             </h2>
           </div>
-          <p className="max-w-md text-base leading-7 text-ivory/65">
+          <p className="mx-auto max-w-md text-base leading-7 text-ivory/65 md:mx-0">
             Datos de muestra conectados al contrato de API. Al aplicar
             migraciones, PostgreSQL sera el origen del catalogo.
           </p>

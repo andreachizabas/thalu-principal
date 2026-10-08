@@ -1,6 +1,5 @@
 "use client";
 
-import { RotateCcw, Volume2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
@@ -37,7 +36,8 @@ function getFullText() {
 }
 
 const fullStoryText = getFullText();
-const fallbackAudioDuration = 47.6;
+const fallbackAudioDuration = 47.57;
+const typingSpeedFactor = 0.9;
 
 function getSegmentStart(segmentIndex: number) {
   return storySegments
@@ -63,7 +63,6 @@ export function StoryTypewriter() {
   const reduceMotion = useReducedMotion();
   const [characterCount, setCharacterCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [needsManualPlay, setNeedsManualPlay] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const effectiveCharacterCount = reduceMotion
     ? fullStoryText.length
@@ -79,7 +78,8 @@ export function StoryTypewriter() {
     const duration = Number.isFinite(audio.duration)
       ? audio.duration
       : fallbackAudioDuration;
-    const progress = Math.min(1, audio.currentTime / duration);
+    const typingDuration = duration * typingSpeedFactor;
+    const progress = Math.min(1, audio.currentTime / typingDuration);
 
     setCharacterCount(Math.floor(fullStoryText.length * progress));
   }
@@ -97,11 +97,9 @@ export function StoryTypewriter() {
     audio.pause();
     audio.currentTime = 0;
     audio.volume = 0.96;
-    setNeedsManualPlay(false);
 
     void audio.play().catch(() => {
       setIsPlaying(false);
-      setNeedsManualPlay(true);
     });
   }
 
@@ -111,57 +109,36 @@ export function StoryTypewriter() {
   }
 
   return (
-    <div>
-      <div className="flex flex-wrap gap-3">
-        <button className="button-primary" type="button" onClick={playStory}>
-          <Volume2 size={18} />
-          Escuchar historia
-        </button>
-        <button className="button-secondary" type="button" onClick={playStory}>
-          <RotateCcw size={18} />
-          Reiniciar
-        </button>
-      </div>
+    <div className="text-center lg:text-left">
+      <button
+        className="mx-auto flex w-full max-w-xs flex-col items-center rounded-[1.5rem] border border-ink/20 bg-ink px-6 py-5 text-center text-ivory shadow-xl shadow-ink/20 transition-transform hover:-translate-y-0.5 lg:mx-0"
+        type="button"
+        onClick={playStory}
+      >
+        <span className="text-xs font-bold uppercase tracking-[0.28em] text-salmon">
+          Sube el volumen
+        </span>
+        <span className="mt-2 text-sm leading-6 text-ivory/70">
+          Toca este aviso para iniciar la historia de ThaLu.
+        </span>
+      </button>
 
       <audio
         ref={audioRef}
         preload="auto"
-        src="/audio/thalu-historia.mp3"
         onTimeUpdate={syncTextWithAudio}
         onEnded={finishStory}
         onPlay={() => {
-          setNeedsManualPlay(false);
           setIsPlaying(true);
         }}
         onPause={() => setIsPlaying(false)}
-      />
-
-      {needsManualPlay ? (
-        <div className="mt-4 rounded-2xl border border-ink/15 bg-ivory/20 p-4">
-          <p className="text-sm font-semibold text-ink">
-            El navegador necesita que actives el audio desde los controles.
-          </p>
-          <audio
-            className="mt-3 w-full"
-            controls
-            src="/audio/thalu-historia.mp3"
-            onTimeUpdate={(event) => {
-              const audio = event.currentTarget;
-              const duration = Number.isFinite(audio.duration)
-                ? audio.duration
-                : fallbackAudioDuration;
-              const progress = Math.min(1, audio.currentTime / duration);
-              setCharacterCount(Math.floor(fullStoryText.length * progress));
-            }}
-            onPlay={() => setIsPlaying(true)}
-            onEnded={finishStory}
-            onPause={() => setIsPlaying(false)}
-          />
-        </div>
-      ) : null}
+      >
+        <source src="/audio/thalu-historia.ogg" type="audio/ogg" />
+        <source src="/audio/thalu-historia.mp3" type="audio/mpeg" />
+      </audio>
 
       <div
-        className="mt-7 min-h-[30rem] max-w-3xl rounded-[1.5rem] border border-ink/15 bg-ivory/24 p-6 shadow-xl shadow-ink/10 md:p-8"
+        className="mx-auto mt-7 min-h-[24rem] max-w-3xl rounded-[1.5rem] border border-ink/15 bg-ivory/24 p-5 text-left shadow-xl shadow-ink/10 sm:min-h-[27rem] md:p-8 lg:mx-0"
         aria-live="polite"
       >
         {storySegments.map((segment, index) => {
@@ -175,7 +152,7 @@ export function StoryTypewriter() {
             return (
               <h2
                 key={segment.text}
-                className="font-display text-4xl font-semibold leading-tight text-ink md:text-5xl"
+                className="font-display text-3xl font-semibold leading-tight text-ink sm:text-4xl md:text-5xl"
               >
                 {visibleText}
                 {isPlaying && isActiveSegment(index, effectiveCharacterCount) ? (
@@ -189,7 +166,7 @@ export function StoryTypewriter() {
             return (
               <p
                 key={segment.text}
-                className="mt-5 font-display text-3xl font-semibold leading-tight text-ink"
+                className="mt-5 font-display text-2xl font-semibold leading-tight text-ink sm:text-3xl"
               >
                 {visibleText}
                 {isPlaying && isActiveSegment(index, effectiveCharacterCount) ? (
@@ -200,7 +177,10 @@ export function StoryTypewriter() {
           }
 
           return (
-            <p key={segment.text} className="mt-5 text-lg leading-8 text-ink/78">
+            <p
+              key={segment.text}
+              className="mt-5 text-base leading-7 text-ink/78 sm:text-lg sm:leading-8"
+            >
               {visibleText}
               {isPlaying && isActiveSegment(index, effectiveCharacterCount) ? (
                 <span className="ml-1 animate-pulse">|</span>
@@ -211,15 +191,15 @@ export function StoryTypewriter() {
 
         {!isPlaying && !reduceMotion && characterCount === 0 ? (
           <p className="text-lg leading-8 text-ink/65">
-            Presiona escuchar historia para descubrir el mensaje de ThaLu.
+            La historia aparecera aqui mientras escuchas la voz de ThaLu.
           </p>
         ) : null}
       </div>
 
       <p className="mt-3 text-sm text-ink/58">
         {isPlaying
-          ? "Estas escuchando la historia de ThaLu con la voz de su creadora."
-          : "Puedes reproducir la historia cuando quieras."}
+          ? "La historia se esta reproduciendo."
+          : "Cuando quieras repetirla, vuelve a tocar el aviso."}
       </p>
     </div>
   );
