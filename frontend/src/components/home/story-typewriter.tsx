@@ -1,7 +1,7 @@
 "use client";
 
 import { RotateCcw, Volume2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 
 type StorySegment = {
@@ -37,6 +37,7 @@ function getFullText() {
 }
 
 const fullStoryText = getFullText();
+const fallbackAudioDuration = 47.6;
 
 function getSegmentStart(segmentIndex: number) {
   return storySegments
@@ -58,90 +59,55 @@ function isActiveSegment(segmentIndex: number, characterCount: number) {
   return characterCount >= start && characterCount <= end;
 }
 
-function pickSpanishVoice(voices: SpeechSynthesisVoice[]) {
-  const spanishVoices = voices.filter((voice) =>
-    voice.lang.toLowerCase().startsWith("es"),
-  );
-
-  return (
-    spanishVoices.find((voice) =>
-      /female|mujer|paulina|monica|mónica|luciana|helena|elena|sabina|paloma/i.test(
-        voice.name,
-      ),
-    ) ??
-    spanishVoices[0] ??
-    voices[0]
-  );
-}
-
 export function StoryTypewriter() {
   const reduceMotion = useReducedMotion();
   const [characterCount, setCharacterCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const intervalRef = useRef<number | null>(null);
+  const [needsManualPlay, setNeedsManualPlay] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const effectiveCharacterCount = reduceMotion
     ? fullStoryText.length
     : characterCount;
 
-  useEffect(() => {
-    if (!isPlaying || reduceMotion) {
+  function syncTextWithAudio() {
+    const audio = audioRef.current;
+
+    if (!audio || reduceMotion) {
       return;
     }
 
-    intervalRef.current = window.setInterval(() => {
-      setCharacterCount((current) => {
-        const next = Math.min(fullStoryText.length, current + 1);
+    const duration = Number.isFinite(audio.duration)
+      ? audio.duration
+      : fallbackAudioDuration;
+    const progress = Math.min(1, audio.currentTime / duration);
 
-        if (next >= fullStoryText.length) {
-          if (intervalRef.current) {
-            window.clearInterval(intervalRef.current);
-            intervalRef.current = null;
-          }
-          window.setTimeout(() => setIsPlaying(false), 0);
-        }
-
-        return next;
-      });
-    }, 34);
-
-    return () => {
-      if (intervalRef.current) {
-        window.clearInterval(intervalRef.current);
-      }
-    };
-  }, [isPlaying, reduceMotion]);
-
-  function speakStory() {
-    if (!("speechSynthesis" in window)) {
-      return;
-    }
-
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(fullStoryText);
-    const voices = window.speechSynthesis.getVoices();
-    const selectedVoice = pickSpanishVoice(voices);
-
-    if (selectedVoice) {
-      utterance.voice = selectedVoice;
-    }
-
-    utterance.lang = selectedVoice?.lang ?? "es-CO";
-    utterance.rate = 0.86;
-    utterance.pitch = 1.12;
-    utterance.volume = 0.78;
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-
-    setIsSpeaking(true);
-    window.speechSynthesis.speak(utterance);
+    setCharacterCount(Math.floor(fullStoryText.length * progress));
   }
 
   function playStory() {
+    const audio = audioRef.current;
+
     setCharacterCount(0);
     setIsPlaying(true);
-    speakStory();
+
+    if (!audio) {
+      return;
+    }
+
+    audio.pause();
+    audio.currentTime = 0;
+    audio.volume = 0.96;
+    setNeedsManualPlay(false);
+
+    void audio.play().catch(() => {
+      setIsPlaying(false);
+      setNeedsManualPlay(true);
+    });
+  }
+
+  function finishStory() {
+    setCharacterCount(fullStoryText.length);
+    setIsPlaying(false);
   }
 
   return (
@@ -156,6 +122,43 @@ export function StoryTypewriter() {
           Reiniciar
         </button>
       </div>
+
+      <audio
+        ref={audioRef}
+        preload="auto"
+        src="/audio/thalu-historia.mp3"
+        onTimeUpdate={syncTextWithAudio}
+        onEnded={finishStory}
+        onPlay={() => {
+          setNeedsManualPlay(false);
+          setIsPlaying(true);
+        }}
+        onPause={() => setIsPlaying(false)}
+      />
+
+      {needsManualPlay ? (
+        <div className="mt-4 rounded-2xl border border-ink/15 bg-ivory/20 p-4">
+          <p className="text-sm font-semibold text-ink">
+            El navegador necesita que actives el audio desde los controles.
+          </p>
+          <audio
+            className="mt-3 w-full"
+            controls
+            src="/audio/thalu-historia.mp3"
+            onTimeUpdate={(event) => {
+              const audio = event.currentTarget;
+              const duration = Number.isFinite(audio.duration)
+                ? audio.duration
+                : fallbackAudioDuration;
+              const progress = Math.min(1, audio.currentTime / duration);
+              setCharacterCount(Math.floor(fullStoryText.length * progress));
+            }}
+            onPlay={() => setIsPlaying(true)}
+            onEnded={finishStory}
+            onPause={() => setIsPlaying(false)}
+          />
+        </div>
+      ) : null}
 
       <div
         className="mt-7 min-h-[30rem] max-w-3xl rounded-[1.5rem] border border-ink/15 bg-ivory/24 p-6 shadow-xl shadow-ink/10 md:p-8"
@@ -214,8 +217,8 @@ export function StoryTypewriter() {
       </div>
 
       <p className="mt-3 text-sm text-ink/58">
-        {isSpeaking
-          ? "La historia se esta leyendo con una voz suave del navegador."
+        {isPlaying
+          ? "Estas escuchando la historia de ThaLu con la voz de su creadora."
           : "Puedes reproducir la historia cuando quieras."}
       </p>
     </div>
