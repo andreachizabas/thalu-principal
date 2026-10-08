@@ -4,6 +4,8 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowLeft, CheckCircle2, KeyRound, Minus, Plus, Smartphone, Trash2, X } from "lucide-react";
 import { useState } from "react";
 import { formatCop } from "@/services/catalog";
+
+const whatsappBaseUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL ?? "https://whatsapp.com/dl/";
 import { getCartSubtotal, useCartStore } from "@/stores/cart-store";
 
 export function CartDrawer() {
@@ -144,7 +146,10 @@ export function CartDrawer() {
                       Tu pedido quedó listo para pago por {paymentMethod === "nequi" ? "Nequi" : "Llave"}.
                       Configuraremos los datos de destino antes de activar el cobro real.
                     </p>
-                    <button type="button" className="button-accent mt-6" onClick={handleClose}>
+                    <a href={`${whatsappBaseUrl}?text=${encodeURIComponent("Hola, ThaLú. Quisiera confirmar mi pedido de productos.")}`} target="_blank" rel="noreferrer" className="button-accent mt-6 w-full">
+                      Enviar pedido por WhatsApp
+                    </a>
+                    <button type="button" className="button-secondary mt-3 w-full" onClick={handleClose}>
                       Volver a la tienda
                     </button>
                   </div>
