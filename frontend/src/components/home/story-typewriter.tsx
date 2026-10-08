@@ -95,27 +95,6 @@ export function StoryTypewriter() {
     setIsPlaying(false);
   }, [stopTextSync]);
 
-  const syncTextWithAudio = useCallback(() => {
-    const audio = audioRef.current;
-
-    if (!audio || reduceMotion) {
-      return;
-    }
-
-    timelineCurrentTimeRef.current = audio.currentTime;
-    timelineBaseTimeRef.current = audio.currentTime;
-    if (timelineStartedAtRef.current !== null) {
-      timelineStartedAtRef.current = performance.now();
-    }
-
-    const duration = Number.isFinite(audio.duration) && audio.duration > 0
-      ? audio.duration
-      : fallbackAudioDuration;
-    const progress = Math.min(1, timelineCurrentTimeRef.current / duration);
-
-    setCharacterCount(Math.floor(fullStoryText.length * progress));
-  }, [reduceMotion]);
-
   const startStoryTimeline = useCallback(
     (restart = false) => {
       const audio = audioRef.current;
@@ -140,20 +119,12 @@ export function StoryTypewriter() {
         }
 
         const currentAudio = audioRef.current;
-        const isAudioRunning = Boolean(
-          currentAudio && !currentAudio.paused && !currentAudio.ended,
-        );
         const elapsed = timelineStartedAtRef.current === null
           ? 0
           : (performance.now() - timelineStartedAtRef.current) / 1000;
 
-        if (isAudioRunning && currentAudio) {
-          timelineCurrentTimeRef.current = currentAudio.currentTime;
-          timelineBaseTimeRef.current = currentAudio.currentTime;
-          timelineStartedAtRef.current = performance.now();
-        } else {
-          timelineCurrentTimeRef.current = timelineBaseTimeRef.current + elapsed;
-        }
+        // Keep the typewriter independent from iOS media timeupdate events.
+        timelineCurrentTimeRef.current = timelineBaseTimeRef.current + elapsed;
 
         const duration = currentAudio && Number.isFinite(currentAudio.duration) && currentAudio.duration > 0
           ? currentAudio.duration
@@ -320,8 +291,6 @@ export function StoryTypewriter() {
         ref={audioRef}
         preload="auto"
         playsInline
-        onTimeUpdate={syncTextWithAudio}
-        onLoadedMetadata={syncTextWithAudio}
         onEnded={finishStory}
         onPlay={() => {
           setIsPlaying(true);
