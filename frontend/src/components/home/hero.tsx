@@ -62,7 +62,7 @@ export function Hero() {
           className="relative mx-auto w-full max-w-sm lg:max-w-none"
         >
           <motion.div
-            className="relative overflow-hidden rounded-[2rem] border border-ivory/15 bg-ink/80 p-6 text-ivory shadow-2xl shadow-ink/30 backdrop-blur-md sm:p-8"
+            className="relative overflow-hidden rounded-[2rem] border border-ivory/20 bg-ink/45 p-6 text-ivory shadow-2xl shadow-ink/30 backdrop-blur-md sm:p-8"
             animate={reduceMotion ? undefined : { y: [0, -8, 0] }}
             transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
           >
