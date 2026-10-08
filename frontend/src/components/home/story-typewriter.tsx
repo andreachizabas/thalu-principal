@@ -69,6 +69,9 @@ export function StoryTypewriter() {
   const hasStartedRef = useRef(false);
   const hasCompletedRef = useRef(false);
   const isStoryVisibleRef = useRef(false);
+  const timelineCurrentTimeRef = useRef(0);
+  const timelineBaseTimeRef = useRef(0);
+  const timelineStartedAtRef = useRef<number | null>(null);
   const effectiveCharacterCount = reduceMotion
     ? fullStoryText.length
     : characterCount;
@@ -82,6 +85,16 @@ export function StoryTypewriter() {
     animationFrameRef.current = null;
   }, []);
 
+  const finishStory = useCallback(() => {
+    hasCompletedRef.current = true;
+    stopTextSync();
+    timelineCurrentTimeRef.current = 0;
+    timelineBaseTimeRef.current = 0;
+    timelineStartedAtRef.current = null;
+    setCharacterCount(fullStoryText.length);
+    setIsPlaying(false);
+  }, [stopTextSync]);
+
   const syncTextWithAudio = useCallback(() => {
     const audio = audioRef.current;
 
@@ -89,68 +102,117 @@ export function StoryTypewriter() {
       return;
     }
 
-    const duration = Number.isFinite(audio.duration)
+    timelineCurrentTimeRef.current = audio.currentTime;
+    timelineBaseTimeRef.current = audio.currentTime;
+    if (timelineStartedAtRef.current !== null) {
+      timelineStartedAtRef.current = performance.now();
+    }
+
+    const duration = Number.isFinite(audio.duration) && audio.duration > 0
       ? audio.duration
       : fallbackAudioDuration;
-    const progress = Math.min(1, audio.currentTime / duration);
+    const progress = Math.min(1, timelineCurrentTimeRef.current / duration);
 
     setCharacterCount(Math.floor(fullStoryText.length * progress));
   }, [reduceMotion]);
 
-  const startTextSync = useCallback(() => {
-    function tick() {
-      const audio = audioRef.current;
-
-      syncTextWithAudio();
-
-      if (audio && !audio.paused && !audio.ended) {
-        animationFrameRef.current = requestAnimationFrame(tick);
-      }
-    }
-
-    stopTextSync();
-    animationFrameRef.current = requestAnimationFrame(tick);
-  }, [stopTextSync, syncTextWithAudio]);
-
-  const playStory = useCallback(
-    (restart = true) => {
+  const startStoryTimeline = useCallback(
+    (restart = false) => {
       const audio = audioRef.current;
 
       if (restart) {
         hasCompletedRef.current = false;
+        timelineCurrentTimeRef.current = 0;
+        timelineBaseTimeRef.current = 0;
         setCharacterCount(0);
+      } else if (audio) {
+        audio.currentTime = timelineCurrentTimeRef.current;
       }
 
+      timelineStartedAtRef.current = performance.now();
       setIsPlaying(true);
+      stopTextSync();
 
-      if (!audio) {
-        return;
+      function tick() {
+        if (!isStoryVisibleRef.current) {
+          animationFrameRef.current = null;
+          return;
+        }
+
+        const currentAudio = audioRef.current;
+        const isAudioRunning = Boolean(
+          currentAudio && !currentAudio.paused && !currentAudio.ended,
+        );
+        const elapsed = timelineStartedAtRef.current === null
+          ? 0
+          : (performance.now() - timelineStartedAtRef.current) / 1000;
+
+        if (isAudioRunning && currentAudio) {
+          timelineCurrentTimeRef.current = currentAudio.currentTime;
+          timelineBaseTimeRef.current = currentAudio.currentTime;
+          timelineStartedAtRef.current = performance.now();
+        } else {
+          timelineCurrentTimeRef.current = timelineBaseTimeRef.current + elapsed;
+        }
+
+        const duration = currentAudio && Number.isFinite(currentAudio.duration) && currentAudio.duration > 0
+          ? currentAudio.duration
+          : fallbackAudioDuration;
+        const progress = Math.min(1, timelineCurrentTimeRef.current / duration);
+
+        setCharacterCount(Math.floor(fullStoryText.length * progress));
+
+        if (progress >= 1) {
+          finishStory();
+          return;
+        }
+
+        animationFrameRef.current = requestAnimationFrame(tick);
       }
 
-      if (restart) {
-        audio.pause();
-        audio.currentTime = 0;
+      animationFrameRef.current = requestAnimationFrame(tick);
+
+      if (audio) {
+        audio.volume = 0.96;
+        void audio
+          .play()
+          .then(() => {
+            if (isStoryVisibleRef.current && timelineCurrentTimeRef.current > 0) {
+              audio.currentTime = timelineCurrentTimeRef.current;
+            }
+          })
+          .catch(() => {
+            // The timeline keeps running when a mobile browser blocks autoplay.
+          });
       }
-
-      audio.volume = 0.96;
-
-      void audio
-        .play()
-        .then(() => {
-          if (!isStoryVisibleRef.current) {
-            audio.pause();
-            setIsPlaying(false);
-            return;
-          }
-
-          setIsPlaying(true);
-          startTextSync();
-        })
-        .catch(() => {
-          setIsPlaying(false);
-        });
     },
-    [startTextSync],
+    [finishStory, stopTextSync],
+  );
+
+  const stopStoryTimeline = useCallback(() => {
+    const audio = audioRef.current;
+
+    if (timelineStartedAtRef.current !== null) {
+      timelineCurrentTimeRef.current = timelineBaseTimeRef.current +
+        (performance.now() - timelineStartedAtRef.current) / 1000;
+      timelineBaseTimeRef.current = timelineCurrentTimeRef.current;
+    }
+
+    timelineStartedAtRef.current = null;
+    stopTextSync();
+
+    if (audio && !audio.paused) {
+      audio.pause();
+    }
+
+    setIsPlaying(false);
+  }, [stopTextSync]);
+
+  const playStory = useCallback(
+    (restart = false) => {
+      startStoryTimeline(restart);
+    },
+    [startStoryTimeline],
   );
 
   useEffect(() => {
@@ -179,14 +241,7 @@ export function StoryTypewriter() {
         }
 
         if (!isStoryReadable) {
-          const audio = audioRef.current;
-
-          stopTextSync();
-          setIsPlaying(false);
-
-          if (audio && !audio.paused) {
-            audio.pause();
-          }
+          stopStoryTimeline();
         }
       },
       { threshold: [0, 0.2, 0.35, 0.55] },
@@ -198,14 +253,7 @@ export function StoryTypewriter() {
       observer.disconnect();
       stopTextSync();
     };
-  }, [playStory, reduceMotion, stopTextSync]);
-
-  function finishStory() {
-    hasCompletedRef.current = true;
-    stopTextSync();
-    setCharacterCount(fullStoryText.length);
-    setIsPlaying(false);
-  }
+  }, [playStory, reduceMotion, stopStoryTimeline, stopTextSync]);
 
   return (
     <div ref={storyRef} className="text-center lg:text-left">
@@ -278,10 +326,6 @@ export function StoryTypewriter() {
         onPlay={() => {
           setIsPlaying(true);
         }}
-        onPause={() => {
-          stopTextSync();
-          setIsPlaying(false);
-        }}
       >
         <source src="/audio/thalu-historia.ogg" type="audio/ogg" />
         <source src="/audio/thalu-historia.mp3" type="audio/mpeg" />
@@ -339,11 +383,6 @@ export function StoryTypewriter() {
           );
         })}
 
-        {!isPlaying && !reduceMotion && characterCount === 0 ? (
-          <p className="text-lg leading-8 text-ink/65">
-            La historia aparecera aqui mientras escuchas la voz de ThaLu.
-          </p>
-        ) : null}
       </div>
     </div>
   );
