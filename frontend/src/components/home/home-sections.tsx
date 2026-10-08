@@ -24,7 +24,7 @@ export function HomeSections() {
 
   return (
     <>
-      <section className="bg-ivory px-5 py-16 text-center text-ink sm:py-20 md:text-left">
+      <section className="bg-salmon px-5 py-16 text-center text-ink sm:py-20 md:text-left">
         <div className="mx-auto max-w-7xl">
           <Reveal>
             <p className="text-sm font-bold uppercase tracking-[0.24em] text-rosewood">
@@ -56,7 +56,7 @@ export function HomeSections() {
         </div>
       </section>
 
-      <section id="historia" className="bg-rosewood px-5 py-16 text-ink sm:py-20">
+      <section id="historia" className="bg-salmon px-5 py-16 text-ink sm:py-20">
         <div className="mx-auto grid max-w-7xl items-center gap-8 md:grid-cols-[0.9fr_1.1fr] md:gap-10">
           <Reveal>
             <motion.div

@@ -6,7 +6,7 @@ export function Hero() {
   const reduceMotion = useReducedMotion();
 
   return (
-    <section className="relative overflow-hidden bg-[#efb4ae] text-ink">
+    <section className="relative overflow-hidden bg-salmon text-ink">
       <motion.div
         className="pointer-events-none absolute right-[-4rem] top-24 z-0 h-64 w-64 bg-[url('/images/thalu-blossom.png')] bg-contain bg-center bg-no-repeat opacity-55 sm:h-80 sm:w-80"
         animate={reduceMotion ? undefined : { y: [0, -12, 0], rotate: [0, 3, 0] }}

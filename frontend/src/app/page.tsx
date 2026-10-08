@@ -13,7 +13,7 @@ export default async function Home() {
   ]);
 
   return (
-    <div className="min-h-screen bg-ink text-ivory">
+    <div className="min-h-screen bg-salmon text-ink">
       <SiteHeader />
       <main>
         <Hero />

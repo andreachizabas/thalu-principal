@@ -11,7 +11,7 @@ export function ProductShowcase({ products }: { products: Product[] }) {
   const addItem = useCartStore((state) => state.addItem);
 
   return (
-    <section id="productos" className="bg-[#f3c0bb] px-5 py-16 text-center text-ink sm:py-20 md:text-left">
+    <section id="productos" className="bg-salmon px-5 py-16 text-center text-ink sm:py-20 md:text-left">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
