@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "motion/react";
-import { Plus, ShoppingBag } from "lucide-react";
+import { Plus } from "lucide-react";
 import { formatCop } from "@/services/catalog";
 import { useCartStore } from "@/stores/cart-store";
 import type { Product } from "@/types/catalog";
@@ -152,11 +152,6 @@ export function ProductShowcase({
           </p>
         ) : null}
 
-        <div className="mt-8 flex items-center gap-3 rounded-2xl border border-dashed border-ink/25 bg-[#edada8]/45 p-5 text-sm text-ink/70">
-          <ShoppingBag className="shrink-0 text-rosewood" size={20} />
-          El carrito local valida la experiencia visual inicial. Los importes e
-          inventario finales se confirmaran desde el backend antes del checkout.
-        </div>
       </div>
     </section>
   );
