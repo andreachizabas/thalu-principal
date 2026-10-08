@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "ThaLú By Andrea Chizabas | Belleza colombiana",
   description:
-    "Boutique colombiana de maquillaje, skincare y cuidado capilar para rituales de autocuidado.",
+    "Tienda colombiana de maquillaje, skincare y cuidado capilar para rituales de autocuidado.",
   icons: {
     icon: "/logo-favicon.png",
   },

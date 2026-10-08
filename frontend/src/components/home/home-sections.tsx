@@ -37,7 +37,7 @@ export function HomeSections({
               Categorias
             </p>
             <h2 className="mx-auto mt-3 max-w-3xl font-display text-4xl font-semibold leading-[0.98] text-ink sm:text-5xl md:mx-0 md:text-6xl">
-              Tres mundos de autocuidado en una boutique cercana.
+              Tres mundos de autocuidado en una tienda cercana.
             </h2>
           </Reveal>
           <div className="mt-10 grid gap-4 md:grid-cols-3">
