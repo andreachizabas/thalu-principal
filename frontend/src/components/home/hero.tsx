@@ -1,11 +1,15 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { useRouter } from "next/navigation";
+import { MessageCircle } from "lucide-react";
+
+const whatsappUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL ?? "https://wa.me/573122347352";
+const welcomeMessage = encodeURIComponent(
+  "Hola, bienvenida a ThaLú 💗 Gracias por escribirnos. En un momento te atenderé para ayudarte con tu servicio de belleza a domicilio. Cuéntame qué servicio necesitas y si te encuentras en Manizales o Villamaría.",
+);
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
-  const router = useRouter();
 
   return (
     <section className="relative overflow-hidden bg-salmon text-ink">
@@ -76,7 +80,10 @@ export function Hero() {
                   <span key={service} className="rounded-xl bg-salmon px-3 py-3">{service}</span>
                 ))}
               </div>
-              <button type="button" onClick={() => router.push("/servicios-a-domicilio")} className="button-accent mt-7 w-full">Agenda tu domicilio</button>
+              <a href={`${whatsappUrl}?text=${welcomeMessage}`} target="_blank" rel="noreferrer" className="button-accent mt-7 w-full">
+                <MessageCircle size={19} aria-hidden="true" />
+                Agenda tu domicilio por WhatsApp
+              </a>
             </div>
           </motion.div>
         </motion.div>
