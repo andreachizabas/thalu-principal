@@ -181,7 +181,7 @@ export function Hero() {
             animate={reduceMotion ? undefined : { scale: [1, 1.035, 1] }}
             transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
           >
-            <p className="font-display text-3xl leading-none">ThaLú</p>
+            <p className="font-display text-3xl leading-none text-salmon">ThaLú</p>
             <p className="mt-2 text-sm font-medium leading-5 text-ivory/88">
               Maquillaje, skincare y cuidado capilar con seleccion curada.
             </p>
