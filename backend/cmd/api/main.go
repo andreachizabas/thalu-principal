@@ -23,6 +23,7 @@ func main() {
 
 	ctx := context.Background()
 	repository := repositories.CatalogRepository(repositories.NewMemoryCatalogRepository())
+	beautyRepository := repositories.BeautyServicesRepository(repositories.NewMemoryBeautyServicesRepository())
 
 	pool, err := database.Open(ctx, cfg.DatabaseURL)
 	if err != nil {
@@ -34,12 +35,13 @@ func main() {
 	} else {
 		defer pool.Close()
 		repository = repositories.NewPostgresCatalogRepository(pool)
+		beautyRepository = repositories.NewPostgresBeautyServicesRepository(pool)
 		logger.Info("database connection ready")
 	}
 
 	server := &http.Server{
 		Addr:         ":" + cfg.Port,
-		Handler:      handlers.NewRouter(handlers.RouterDependencies{Config: cfg, Catalog: services.NewCatalogService(repository), Logger: logger}),
+		Handler:      handlers.NewRouter(handlers.RouterDependencies{Config: cfg, Catalog: services.NewCatalogService(repository), BeautyServices: services.NewBeautyServicesService(beautyRepository), Logger: logger}),
 		ReadTimeout:  cfg.ReadTimeout,
 		WriteTimeout: cfg.WriteTimeout,
 	}

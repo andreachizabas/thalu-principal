@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const heroImages = [
@@ -13,6 +14,7 @@ const heroImages = [
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
+  const router = useRouter();
   const [deckStep, setDeckStep] = useState(0);
   const [isDeckRotating, setIsDeckRotating] = useState(false);
 
@@ -177,13 +179,21 @@ export function Hero() {
             />
           </motion.button>
           <motion.div
-            className="absolute bottom-12 right-0 max-w-56 rounded-2xl bg-ink p-5 text-ivory shadow-2xl"
+            className="absolute bottom-12 right-0 max-w-56 cursor-pointer rounded-2xl bg-ink p-5 text-ivory shadow-2xl"
+            role="link"
+            tabIndex={0}
+            onClick={() => router.push("/servicios-a-domicilio")}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                router.push("/servicios-a-domicilio");
+              }
+            }}
             animate={reduceMotion ? undefined : { scale: [1, 1.035, 1] }}
             transition={{ duration: 3.6, repeat: Infinity, ease: "easeInOut" }}
           >
             <p className="font-display text-3xl leading-none text-salmon">ThaLú</p>
             <p className="mt-2 text-sm font-medium leading-5 text-ivory/88">
-              Maquillaje, skincare y cuidado capilar con seleccion curada.
+              Uñas y cuidado capilar a domicilio en Manizales y Villamaría.
             </p>
           </motion.div>
         </motion.div>

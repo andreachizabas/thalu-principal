@@ -128,6 +128,22 @@ a {
   opacity: 0.45;
 }
 
+.service-input {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  min-height: 3rem;
+  border-radius: 0.8rem;
+  border: 1px solid rgb(250 245 241 / 0.2);
+  background: rgb(250 245 241 / 0.08);
+  padding: 0.7rem 0.85rem;
+  color: #faf5f1;
+  outline: none;
+}
+
+.service-input:focus { border-color: #e99b91; }
+.service-input option { color: #111111; }
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

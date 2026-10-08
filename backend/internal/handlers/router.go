@@ -1,19 +1,23 @@
 package handlers
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"log/slog"
 	"net/http"
 	"time"
 
 	"github.com/andreachizabas/thalu-principal/backend/internal/config"
+	"github.com/andreachizabas/thalu-principal/backend/internal/domain"
 	"github.com/andreachizabas/thalu-principal/backend/internal/services"
 )
 
 type RouterDependencies struct {
-	Config  config.Config
-	Catalog *services.CatalogService
-	Logger  *slog.Logger
+	Config         config.Config
+	Catalog        *services.CatalogService
+	BeautyServices *services.BeautyServicesService
+	Logger         *slog.Logger
 }
 
 func NewRouter(deps RouterDependencies) http.Handler {
@@ -45,8 +49,71 @@ func NewRouter(deps RouterDependencies) http.Handler {
 		}
 		writeJSON(w, http.StatusOK, message)
 	})
+	mux.HandleFunc("GET /api/v1/services", func(w http.ResponseWriter, r *http.Request) {
+		items, err := deps.BeautyServices.ActiveServices(r.Context())
+		if err != nil {
+			writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "services unavailable"})
+			return
+		}
+		writeJSON(w, http.StatusOK, items)
+	})
+	mux.HandleFunc("POST /api/v1/service-requests", func(w http.ResponseWriter, r *http.Request) {
+		var input domain.ServiceRequestInput
+		if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, 32*1024)).Decode(&input); err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid request"})
+			return
+		}
+		request, err := deps.BeautyServices.CreateRequest(r.Context(), input, newRequestID())
+		if err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "Revisa los datos y el servicio seleccionado."})
+			return
+		}
+		writeJSON(w, http.StatusCreated, request)
+	})
+	mux.HandleFunc("GET /api/v1/admin/service-requests", func(w http.ResponseWriter, r *http.Request) {
+		if !authorized(deps.Config.AdminAPIKey, r) {
+			writeJSON(w, http.StatusUnauthorized, map[string]string{"error": "unauthorized"})
+			return
+		}
+		items, err := deps.BeautyServices.Requests(r.Context())
+		if err != nil {
+			writeJSON(w, http.StatusInternalServerError, map[string]string{"error": "requests unavailable"})
+			return
+		}
+		writeJSON(w, http.StatusOK, items)
+	})
+	mux.HandleFunc("PATCH /api/v1/admin/service-requests/{id}", func(w http.ResponseWriter, r *http.Request) {
+		if !authorized(deps.Config.AdminAPIKey, r) {
+			writeJSON(w, http.StatusUnauthorized, map[string]string{"error": "unauthorized"})
+			return
+		}
+		var body struct {
+			Status string `json:"status"`
+		}
+		if json.NewDecoder(r.Body).Decode(&body) != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]string{"error": "invalid request"})
+			return
+		}
+		item, err := deps.BeautyServices.UpdateStatus(r.Context(), r.PathValue("id"), body.Status)
+		if err != nil {
+			writeJSON(w, http.StatusNotFound, map[string]string{"error": "request not found"})
+			return
+		}
+		writeJSON(w, http.StatusOK, item)
+	})
 
 	return withLogging(deps.Logger, withCORS(deps.Config.CORSAllowedOrigins, mux))
+}
+
+func authorized(key string, r *http.Request) bool {
+	return key != "" && r.Header.Get("Authorization") == "Bearer "+key
+}
+func newRequestID() string {
+	bytes := make([]byte, 8)
+	if _, err := rand.Read(bytes); err != nil {
+		return "THA-SOLICITUD"
+	}
+	return "THA-" + hex.EncodeToString(bytes)
 }
 
 func writeJSON(w http.ResponseWriter, status int, payload any) {

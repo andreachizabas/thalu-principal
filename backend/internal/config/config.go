@@ -11,6 +11,7 @@ type Config struct {
 	Port               string
 	DatabaseURL        string
 	CORSAllowedOrigins []string
+	AdminAPIKey        string
 	ReadTimeout        time.Duration
 	WriteTimeout       time.Duration
 }
@@ -21,6 +22,7 @@ func Load() Config {
 		Port:               getEnv("PORT", "8080"),
 		DatabaseURL:        os.Getenv("DATABASE_URL"),
 		CORSAllowedOrigins: splitCSV(getEnv("CORS_ALLOWED_ORIGINS", "http://localhost:3000")),
+		AdminAPIKey:        os.Getenv("ADMIN_API_KEY"),
 		ReadTimeout:        10 * time.Second,
 		WriteTimeout:       10 * time.Second,
 	}

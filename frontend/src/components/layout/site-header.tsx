@@ -13,6 +13,7 @@ const navigation = [
   { label: "Maquillaje", href: "/catalogo/maquillaje" },
   { label: "Skincare", href: "/catalogo/skincare" },
   { label: "Cuidado capilar", href: "/catalogo/cuidado-capilar" },
+  { label: "Servicios a domicilio", href: "/servicios-a-domicilio" },
   { label: "Novedades", href: "/novedades" },
   { label: "Nuestra historia", href: "/nuestra-historia" },
 ];
