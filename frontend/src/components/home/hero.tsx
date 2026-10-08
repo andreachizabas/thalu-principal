@@ -13,16 +13,19 @@ const heroImages = [
 
 export function Hero() {
   const reduceMotion = useReducedMotion();
-  const [imageIndexes, setImageIndexes] = useState([0, 1, 2]);
+  const [deckStep, setDeckStep] = useState(0);
+  const [isDeckRotating, setIsDeckRotating] = useState(false);
 
-  function rotateImage(panelIndex: number) {
-    setImageIndexes((currentIndexes) =>
-      currentIndexes.map((currentIndex, index) =>
-        index === panelIndex
-          ? (currentIndex + 1) % heroImages.length
-          : currentIndex,
-      ),
-    );
+  function advanceDeck() {
+    if (isDeckRotating) {
+      return;
+    }
+
+    setIsDeckRotating(true);
+    window.setTimeout(() => {
+      setDeckStep((currentStep) => (currentStep + 1) % heroImages.length);
+      setIsDeckRotating(false);
+    }, 325);
   }
 
   return (
@@ -82,15 +85,28 @@ export function Hero() {
           <motion.button
             type="button"
             aria-label="Cambiar imagen de maquillaje"
-            onClick={() => rotateImage(0)}
+            onClick={advanceDeck}
             className="absolute left-4 top-6 h-64 w-48 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-2xl shadow-ink/30 md:h-80 md:w-60"
-            animate={reduceMotion ? undefined : { y: [0, -10, 0] }}
-            transition={{ duration: 4.8, repeat: Infinity, ease: "easeInOut" }}
+            animate={
+              reduceMotion
+                ? undefined
+                : {
+                    y: [0, -10, 0],
+                    rotateY: isDeckRotating ? [0, 180, 360] : 0,
+                  }
+            }
+            transition={{
+              y: { duration: 4.8, repeat: Infinity, ease: "easeInOut" },
+              rotateY: { duration: 0.65, ease: "easeInOut" },
+            }}
+            style={{ transformStyle: "preserve-3d", perspective: 900 }}
           >
             <motion.div
-              key={heroImages[imageIndexes[0]]}
+              key={heroImages[deckStep % heroImages.length]}
               className="h-full rounded-[1.45rem] bg-cover bg-center"
-              style={{ backgroundImage: `url(${heroImages[imageIndexes[0]]})` }}
+              style={{
+                backgroundImage: `url(${heroImages[deckStep % heroImages.length]})`,
+              }}
               initial={reduceMotion ? false : { opacity: 0.35 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.35 }}
@@ -99,15 +115,30 @@ export function Hero() {
           <motion.button
             type="button"
             aria-label="Cambiar imagen de skincare"
-            onClick={() => rotateImage(1)}
+            onClick={advanceDeck}
             className="absolute right-2 top-0 h-80 w-56 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-xl md:right-12 md:h-[26rem] md:w-72"
-            animate={reduceMotion ? undefined : { y: [0, 12, 0], rotate: [0, -1.3, 0] }}
-            transition={{ duration: 5.6, repeat: Infinity, ease: "easeInOut" }}
+            animate={
+              reduceMotion
+                ? undefined
+                : {
+                    y: [0, 12, 0],
+                    rotate: [0, -1.3, 0],
+                    rotateY: isDeckRotating ? [0, 180, 360] : 0,
+                  }
+            }
+            transition={{
+              y: { duration: 5.6, repeat: Infinity, ease: "easeInOut" },
+              rotate: { duration: 5.6, repeat: Infinity, ease: "easeInOut" },
+              rotateY: { duration: 0.65, ease: "easeInOut" },
+            }}
+            style={{ transformStyle: "preserve-3d", perspective: 900 }}
           >
             <motion.div
-              key={heroImages[imageIndexes[1]]}
+              key={heroImages[(deckStep + 1) % heroImages.length]}
               className="h-full rounded-[1.45rem] bg-cover bg-center"
-              style={{ backgroundImage: `url(${heroImages[imageIndexes[1]]})` }}
+              style={{
+                backgroundImage: `url(${heroImages[(deckStep + 1) % heroImages.length]})`,
+              }}
               initial={reduceMotion ? false : { opacity: 0.35 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.35 }}
@@ -116,15 +147,30 @@ export function Hero() {
           <motion.button
             type="button"
             aria-label="Cambiar imagen de cuidado capilar"
-            onClick={() => rotateImage(2)}
+            onClick={advanceDeck}
             className="absolute bottom-4 left-0 h-72 w-56 overflow-hidden rounded-[2.2rem] border-8 border-ink bg-ink p-2 shadow-2xl md:left-16 md:w-72"
-            animate={reduceMotion ? undefined : { y: [0, -14, 0], rotate: [0, 1.2, 0] }}
-            transition={{ duration: 6.2, repeat: Infinity, ease: "easeInOut" }}
+            animate={
+              reduceMotion
+                ? undefined
+                : {
+                    y: [0, -14, 0],
+                    rotate: [0, 1.2, 0],
+                    rotateY: isDeckRotating ? [0, 180, 360] : 0,
+                  }
+            }
+            transition={{
+              y: { duration: 6.2, repeat: Infinity, ease: "easeInOut" },
+              rotate: { duration: 6.2, repeat: Infinity, ease: "easeInOut" },
+              rotateY: { duration: 0.65, ease: "easeInOut" },
+            }}
+            style={{ transformStyle: "preserve-3d", perspective: 900 }}
           >
             <motion.div
-              key={heroImages[imageIndexes[2]]}
+              key={heroImages[(deckStep + 2) % heroImages.length]}
               className="h-full rounded-[1.45rem] bg-cover bg-center"
-              style={{ backgroundImage: `url(${heroImages[imageIndexes[2]]})` }}
+              style={{
+                backgroundImage: `url(${heroImages[(deckStep + 2) % heroImages.length]})`,
+              }}
               initial={reduceMotion ? false : { opacity: 0.35 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.35 }}

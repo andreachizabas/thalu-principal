@@ -8,6 +8,10 @@ import { useCartStore } from "@/stores/cart-store";
 import type { Product } from "@/types/catalog";
 
 function getProductImage(product: Product) {
+  if (product.id.startsWith("catalogo-")) {
+    return product.imageUrl;
+  }
+
   if (product.category === "Maquillaje") {
     return "/images/thalu-lipstick.png";
   }
@@ -27,10 +31,12 @@ export function ProductShowcase({
   products,
   selectedCategory = "Todos",
   onCategoryChange,
+  showFilters = true,
 }: {
   products: Product[];
   selectedCategory?: string;
   onCategoryChange?: (category: string) => void;
+  showFilters?: boolean;
 }) {
   const addItem = useCartStore((state) => state.addItem);
   const visibleProducts = selectedCategory === "Todos"
@@ -55,25 +61,27 @@ export function ProductShowcase({
           </p>
         </div>
 
-        <div className="mt-8 flex flex-wrap gap-2 md:mt-10">
-          {["Todos", "Maquillaje", "Skincare", "Cuidado capilar"].map(
-            (category) => (
-              <button
-                key={category}
-                type="button"
-                aria-pressed={selectedCategory === category}
-                onClick={() => onCategoryChange?.(category)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-                  selectedCategory === category
-                    ? "bg-ink text-ivory"
-                    : "bg-ivory/65 text-ink hover:bg-ivory"
-                }`}
-              >
-                {category}
-              </button>
-            ),
-          )}
-        </div>
+        {showFilters ? (
+          <div className="mt-8 flex flex-wrap gap-2 md:mt-10">
+            {["Todos", "Maquillaje", "Skincare", "Cuidado capilar"].map(
+              (category) => (
+                <button
+                  key={category}
+                  type="button"
+                  aria-pressed={selectedCategory === category}
+                  onClick={() => onCategoryChange?.(category)}
+                  className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                    selectedCategory === category
+                      ? "bg-ink text-ivory"
+                      : "bg-ivory/65 text-ink hover:bg-ivory"
+                  }`}
+                >
+                  {category}
+                </button>
+              ),
+            )}
+          </div>
+        ) : null}
 
         <div className="mt-7 grid gap-5 md:grid-cols-3">
           {visibleProducts.map((product, index) => (
