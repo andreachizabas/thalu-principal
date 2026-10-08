@@ -52,19 +52,10 @@ export function Hero() {
           >
             Tu belleza, tu esencia, tu momento.
           </motion.h1>
-          <motion.p
-            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
-            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={{ delay: 0.24, duration: 0.75 }}
-            className="mx-auto mt-6 max-w-2xl text-base font-semibold leading-7 text-ink/88 sm:text-lg sm:leading-8 lg:mx-0"
-          >
-            Descubre productos seleccionados para acompanarte en tus rituales
-            de autocuidado.
-          </motion.p>
           <motion.div
             initial={reduceMotion ? false : { opacity: 0, y: 18 }}
             animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-            transition={{ delay: 0.34, duration: 0.65 }}
+            transition={{ delay: 0.24, duration: 0.65 }}
             className="mx-auto mt-8 flex max-w-sm flex-col gap-3 sm:flex-row lg:mx-0 lg:max-w-none"
           >
             <a className="button-primary" href="#productos">
@@ -74,6 +65,15 @@ export function Hero() {
               Conoce ThaLú
             </a>
           </motion.div>
+          <motion.p
+            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+            animate={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+            transition={{ delay: 0.34, duration: 0.75 }}
+            className="mx-auto mt-6 max-w-2xl text-base font-semibold leading-7 text-ink sm:text-lg sm:leading-8 lg:mx-0"
+          >
+            Descubre productos seleccionados para acompanarte en tus rituales
+            de autocuidado.
+          </motion.p>
         </div>
 
         <motion.div
