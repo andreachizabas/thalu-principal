@@ -38,7 +38,6 @@ function getFullText() {
 
 const fullStoryText = getFullText();
 const fallbackAudioDuration = 47.57;
-const typingSpeedFactor = 0.82;
 
 function getSegmentStart(segmentIndex: number) {
   return storySegments
@@ -66,29 +65,93 @@ export function StoryTypewriter() {
   const [isPlaying, setIsPlaying] = useState(false);
   const storyRef = useRef<HTMLDivElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
   const hasStartedRef = useRef(false);
+  const hasCompletedRef = useRef(false);
+  const isStoryVisibleRef = useRef(false);
   const effectiveCharacterCount = reduceMotion
     ? fullStoryText.length
     : characterCount;
 
-  const playStory = useCallback(() => {
-    const audio = audioRef.current;
-
-    setCharacterCount(0);
-    setIsPlaying(true);
-
-    if (!audio) {
+  const stopTextSync = useCallback(() => {
+    if (animationFrameRef.current === null) {
       return;
     }
 
-    audio.pause();
-    audio.currentTime = 0;
-    audio.volume = 0.96;
-
-    void audio.play().catch(() => {
-      setIsPlaying(false);
-    });
+    cancelAnimationFrame(animationFrameRef.current);
+    animationFrameRef.current = null;
   }, []);
+
+  const syncTextWithAudio = useCallback(() => {
+    const audio = audioRef.current;
+
+    if (!audio || reduceMotion) {
+      return;
+    }
+
+    const duration = Number.isFinite(audio.duration)
+      ? audio.duration
+      : fallbackAudioDuration;
+    const progress = Math.min(1, audio.currentTime / duration);
+
+    setCharacterCount(Math.floor(fullStoryText.length * progress));
+  }, [reduceMotion]);
+
+  const startTextSync = useCallback(() => {
+    function tick() {
+      const audio = audioRef.current;
+
+      syncTextWithAudio();
+
+      if (audio && !audio.paused && !audio.ended) {
+        animationFrameRef.current = requestAnimationFrame(tick);
+      }
+    }
+
+    stopTextSync();
+    animationFrameRef.current = requestAnimationFrame(tick);
+  }, [stopTextSync, syncTextWithAudio]);
+
+  const playStory = useCallback(
+    (restart = true) => {
+      const audio = audioRef.current;
+
+      if (restart) {
+        hasCompletedRef.current = false;
+        setCharacterCount(0);
+      }
+
+      setIsPlaying(true);
+
+      if (!audio) {
+        return;
+      }
+
+      if (restart) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+
+      audio.volume = 0.96;
+
+      void audio
+        .play()
+        .then(() => {
+          if (!isStoryVisibleRef.current) {
+            audio.pause();
+            setIsPlaying(false);
+            return;
+          }
+
+          setIsPlaying(true);
+          startTextSync();
+        })
+        .catch(() => {
+          setIsPlaying(false);
+        });
+    },
+    [startTextSync],
+  );
 
   useEffect(() => {
     const story = storyRef.current;
@@ -99,36 +162,47 @@ export function StoryTypewriter() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasStartedRef.current) {
-          hasStartedRef.current = true;
-          playStory();
+        const isStoryReadable =
+          entry.isIntersecting && entry.intersectionRatio >= 0.35;
+
+        isStoryVisibleRef.current = isStoryReadable;
+
+        if (isStoryReadable && !hasCompletedRef.current) {
+          if (!hasStartedRef.current) {
+            hasStartedRef.current = true;
+            playStory(true);
+            return;
+          }
+
+          playStory(false);
+          return;
+        }
+
+        if (!isStoryReadable) {
+          const audio = audioRef.current;
+
+          stopTextSync();
+          setIsPlaying(false);
+
+          if (audio && !audio.paused) {
+            audio.pause();
+          }
         }
       },
-      { threshold: 0.55 },
+      { threshold: [0, 0.2, 0.35, 0.55] },
     );
 
     observer.observe(story);
 
-    return () => observer.disconnect();
-  }, [playStory, reduceMotion]);
-
-  function syncTextWithAudio() {
-    const audio = audioRef.current;
-
-    if (!audio || reduceMotion) {
-      return;
-    }
-
-    const duration = Number.isFinite(audio.duration)
-      ? audio.duration
-      : fallbackAudioDuration;
-    const typingDuration = duration * typingSpeedFactor;
-    const progress = Math.min(1, audio.currentTime / typingDuration);
-
-    setCharacterCount(Math.floor(fullStoryText.length * progress));
-  }
+    return () => {
+      observer.disconnect();
+      stopTextSync();
+    };
+  }, [playStory, reduceMotion, stopTextSync]);
 
   function finishStory() {
+    hasCompletedRef.current = true;
+    stopTextSync();
     setCharacterCount(fullStoryText.length);
     setIsPlaying(false);
   }
@@ -139,7 +213,7 @@ export function StoryTypewriter() {
         className="relative mx-auto flex w-full max-w-xs items-center justify-center gap-4 overflow-hidden rounded-[1.5rem] border border-ink/20 bg-ink px-6 py-5 text-center text-ivory shadow-xl shadow-ink/20 lg:mx-0"
         type="button"
         aria-label="Sube el volumen para escuchar la historia de ThaLu"
-        onClick={playStory}
+        onClick={() => playStory(true)}
         initial={reduceMotion ? false : { opacity: 0, y: 12 }}
         whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
         whileHover={reduceMotion ? undefined : { y: -2, scale: 1.01 }}
@@ -199,11 +273,15 @@ export function StoryTypewriter() {
         preload="auto"
         playsInline
         onTimeUpdate={syncTextWithAudio}
+        onLoadedMetadata={syncTextWithAudio}
         onEnded={finishStory}
         onPlay={() => {
           setIsPlaying(true);
         }}
-        onPause={() => setIsPlaying(false)}
+        onPause={() => {
+          stopTextSync();
+          setIsPlaying(false);
+        }}
       >
         <source src="/audio/thalu-historia.ogg" type="audio/ogg" />
         <source src="/audio/thalu-historia.mp3" type="audio/mpeg" />
