@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf5f1;
-  --foreground: #111111;
+  --background: #111111;
+  --foreground: #faf5f1;
 }
 
 @theme inline {
@@ -38,9 +38,9 @@ a {
   width: 2.75rem;
   place-items: center;
   border-radius: 999px;
-  border: 1px solid rgb(17 17 17 / 0.1);
-  background: rgb(255 255 255 / 0.52);
-  color: #111111;
+  border: 1px solid rgb(250 245 241 / 0.18);
+  background: rgb(250 245 241 / 0.08);
+  color: #faf5f1;
   transition:
     transform 180ms ease,
     background-color 180ms ease,
@@ -49,8 +49,14 @@ a {
 
 .icon-button:hover {
   transform: translateY(-1px);
-  border-color: rgb(201 121 116 / 0.45);
-  background: rgb(255 255 255 / 0.9);
+  border-color: rgb(233 155 145 / 0.65);
+  background: rgb(233 155 145 / 0.18);
+}
+
+.icon-button-dark {
+  border-color: rgb(17 17 17 / 0.14);
+  background: rgb(250 245 241 / 0.24);
+  color: #111111;
 }
 
 .button-primary,
@@ -84,13 +90,39 @@ a {
 }
 
 .button-secondary {
-  border: 1px solid rgb(17 17 17 / 0.12);
+  border: 1px solid rgb(17 17 17 / 0.22);
+  background: rgb(250 245 241 / 0.16);
   color: #111111;
 }
 
 .button-secondary:hover {
   transform: translateY(-1px);
   border-color: rgb(201 121 116 / 0.45);
+}
+
+.button-accent {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #e99b91;
+  color: #111111;
+  padding: 0.85rem 1.4rem;
+  font-weight: 800;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+}
+
+.button-accent:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: #f0aea5;
+}
+
+.button-accent:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 
 @media (prefers-reduced-motion: reduce) {

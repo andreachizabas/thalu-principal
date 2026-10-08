@@ -22,19 +22,19 @@ export function CartDrawer() {
             onClick={closeCart}
           />
           <motion.aside
-            className="fixed right-0 top-0 z-50 flex h-dvh w-full max-w-md flex-col bg-ivory shadow-2xl"
+            className="fixed right-0 top-0 z-50 flex h-dvh w-full max-w-md flex-col bg-ink text-ivory shadow-2xl"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 260, damping: 28 }}
             aria-label="Carrito de compras"
           >
-            <div className="flex items-center justify-between border-b border-black/10 p-5">
+            <div className="flex items-center justify-between border-b border-salmon/20 p-5">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-rosewood">
+                <p className="text-xs font-bold uppercase tracking-[0.22em] text-salmon">
                   ThaLu
                 </p>
-                <h2 className="font-display text-4xl font-semibold text-ink">
+                <h2 className="font-display text-4xl font-semibold text-ivory">
                   Tu carrito
                 </h2>
               </div>
@@ -47,10 +47,10 @@ export function CartDrawer() {
               {items.length === 0 ? (
                 <div className="grid h-full place-items-center text-center">
                   <div>
-                    <p className="font-display text-3xl font-semibold text-ink">
+                    <p className="font-display text-3xl font-semibold text-ivory">
                       Aun no hay productos.
                     </p>
-                    <p className="mt-2 text-sm text-ink/60">
+                    <p className="mt-2 text-sm text-ivory/60">
                       Explora la seleccion y agrega tus favoritos.
                     </p>
                   </div>
@@ -60,19 +60,19 @@ export function CartDrawer() {
                   {items.map((item) => (
                     <article
                       key={item.product.id}
-                      className="rounded-2xl border border-black/10 bg-white p-4"
+                      className="rounded-2xl border border-salmon/25 bg-salmon p-4 text-ink"
                     >
                       <div className="flex items-start justify-between gap-4">
                         <div>
                           <h3 className="font-display text-2xl font-semibold leading-none text-ink">
                             {item.product.name}
                           </h3>
-                          <p className="mt-2 text-sm text-ink/60">
+                          <p className="mt-2 text-sm text-ink/65">
                             {formatCop(item.product.priceCents)}
                           </p>
                         </div>
                         <button
-                          className="icon-button"
+                          className="icon-button icon-button-dark"
                           aria-label={`Eliminar ${item.product.name}`}
                           onClick={() => removeItem(item.product.id)}
                         >
@@ -80,7 +80,7 @@ export function CartDrawer() {
                         </button>
                       </div>
                       <div className="mt-4 flex items-center justify-between">
-                        <div className="flex items-center rounded-full border border-black/10 bg-ivory">
+                        <div className="flex items-center rounded-full border border-ink/15 bg-ivory/35">
                           <button
                             className="grid h-9 w-9 place-items-center"
                             aria-label="Reducir cantidad"
@@ -113,18 +113,15 @@ export function CartDrawer() {
               )}
             </div>
 
-            <div className="border-t border-black/10 p-5">
-              <div className="flex items-center justify-between text-lg font-bold text-ink">
+            <div className="border-t border-salmon/20 p-5">
+              <div className="flex items-center justify-between text-lg font-bold text-ivory">
                 <span>Subtotal</span>
                 <span>{formatCop(subtotal)}</span>
               </div>
-              <button
-                className="button-primary mt-4 w-full justify-center"
-                disabled={!items.length}
-              >
+              <button className="button-accent mt-4 w-full" disabled={!items.length}>
                 Iniciar checkout
               </button>
-              <p className="mt-3 text-xs leading-5 text-ink/55">
+              <p className="mt-3 text-xs leading-5 text-ivory/55">
                 Los descuentos, envio e inventario se validaran en servidor.
               </p>
             </div>
