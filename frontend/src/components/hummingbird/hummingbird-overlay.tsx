@@ -153,19 +153,24 @@ function createPhotorealBird(bodyTexture: THREE.Texture, wingTexture: THREE.Text
     const pivot = new THREE.Group();
     pivot.position.set(0.16, 0.12, side * 0.14);
     pivot.userData.phase = phase;
-    const wing = new THREE.Sprite(new THREE.SpriteMaterial({
-      map: wingTexture,
-      color: tint,
-      transparent: true,
-      opacity,
-      alphaTest: 0.035,
-      depthWrite: false,
-      toneMapped: false,
-    }));
-    wing.center.set(0.95, 0.065);
-    wing.scale.set(size, size, 1);
-    wing.renderOrder = order;
-    pivot.add(wing);
+    pivot.userData.layers = [-0.42, 0, 0.42].map((phaseOffset, index) => {
+      const blur = index !== 1;
+      const wing = new THREE.Sprite(new THREE.SpriteMaterial({
+        map: wingTexture,
+        color: tint,
+        transparent: true,
+        opacity: opacity * (blur ? 0.2 : 0.8),
+        alphaTest: 0.025,
+        depthWrite: false,
+        toneMapped: false,
+      }));
+      wing.center.set(0.95, 0.065);
+      wing.scale.set(size * (blur ? 0.95 : 1), size * (blur ? 0.95 : 1), 1);
+      wing.position.z = (index - 1) * 0.012;
+      wing.renderOrder = order + index * 0.001;
+      pivot.add(wing);
+      return { sprite: wing, phaseOffset };
+    });
     body.add(pivot);
     return pivot;
   });
@@ -573,14 +578,26 @@ export function HummingbirdOverlay() {
       lastTime = now;
       const wings = bird.userData.wings as THREE.Group[];
       const body = bird.userData.body as THREE.Group;
-      const flapRate = mode === "feed" ? 0.235 : 0.215;
+      const flapRate = mode === "feed" ? 0.32 : 0.29;
       wings.forEach((wing) => {
-        const phase = now * flapRate + wing.userData.phase;
-        const wave = Math.sin(phase);
-        const downstroke = wave >= 0 ? Math.pow(wave, 0.82) : -Math.pow(-wave, 1.08);
-        wing.rotation.z = downstroke * 0.5;
-        wing.rotation.x = Math.cos(phase) * 0.66;
-        wing.rotation.y = Math.sin(phase + 0.24) * 0.11;
+        const layers = wing.userData.layers as { sprite: THREE.Sprite; phaseOffset: number }[] | undefined;
+        if (layers) {
+          layers.forEach(({ sprite, phaseOffset }) => {
+            const phase = now * flapRate + wing.userData.phase + phaseOffset;
+            const wave = Math.sin(phase);
+            const downstroke = wave >= 0 ? Math.pow(wave, 0.68) : -Math.pow(-wave, 1.22);
+            sprite.rotation.z = downstroke * 0.78;
+            sprite.rotation.x = Math.cos(phase) * 0.68;
+            sprite.rotation.y = Math.sin(phase + 0.24) * 0.11;
+          });
+        } else {
+          const phase = now * flapRate + wing.userData.phase;
+          const wave = Math.sin(phase);
+          const downstroke = wave >= 0 ? Math.pow(wave, 0.68) : -Math.pow(-wave, 1.22);
+          wing.rotation.z = downstroke * 0.78;
+          wing.rotation.x = Math.cos(phase) * 0.68;
+          wing.rotation.y = Math.sin(phase + 0.24) * 0.11;
+        }
       });
       const tail = bird.userData.tail as THREE.Group;
       const head = bird.userData.head as THREE.Group;
