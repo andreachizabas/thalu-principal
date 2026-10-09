@@ -15,6 +15,16 @@ function createWing(color: number, side: number) {
   return wing;
 }
 
+function createHummingbirdSprite() {
+  const texture = new THREE.TextureLoader().load("/images/thalu-hummingbird.png");
+  texture.colorSpace = THREE.SRGBColorSpace;
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthTest: false }));
+  sprite.scale.set(0.78, 1.16, 1);
+  sprite.userData.wings = [sprite, sprite];
+  sprite.userData.tail = sprite;
+  return sprite;
+}
+
 function createHummingbird() {
   const bird = new THREE.Group();
   const dark = new THREE.MeshStandardMaterial({ color: config.ink, roughness: 0.42, metalness: 0.28 });
@@ -43,7 +53,7 @@ export function HummingbirdOverlay() {
     try { renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: "low-power" }); } catch { return; }
     const scene = new THREE.Scene(); const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 100); camera.position.z = 10;
     scene.add(new THREE.AmbientLight(0xffffff, 2.2)); const light = new THREE.DirectionalLight(0xffd6d0, 2.8); light.position.set(-2, 4, 6); scene.add(light);
-    const bird = createHummingbird(); scene.add(bird); let width = 1; let height = 1; let worldWidth = 10; const worldHeight = 6; let curve: THREE.CatmullRomCurve3 | null = null; let startedAt = performance.now(); let pauseUntil = 0; let frame = 0; let disposed = false;
+    const bird = createHummingbirdSprite(); scene.add(bird); let width = 1; let height = 1; let worldWidth = 10; const worldHeight = 6; let curve: THREE.CatmullRomCurve3 | null = null; let startedAt = performance.now(); let pauseUntil = 0; let frame = 0; let disposed = false;
     function resize() { width = window.innerWidth; height = window.innerHeight; worldWidth = Math.max(8, (width / height) * 6); camera.left = -worldWidth / 2; camera.right = worldWidth / 2; camera.top = worldHeight / 2; camera.bottom = -worldHeight / 2; camera.updateProjectionMatrix(); renderer.setPixelRatio(Math.min(window.devicePixelRatio, config.maxPixelRatio)); renderer.setSize(width, height, false); }
     function pointFromViewport(x: number, y: number) { return new THREE.Vector3((x / width - 0.5) * worldWidth, (0.5 - y / height) * worldHeight, 0); }
     function setPath(destination: THREE.Vector3, duration: number = config.flightDurationMs) { const start = bird.position.clone(); const direction = destination.clone().sub(start); const perpendicular = new THREE.Vector3(-direction.y, direction.x, 0).normalize().multiplyScalar(Math.min(1.2, direction.length() * 0.25)); curve = new THREE.CatmullRomCurve3([start, start.clone().add(direction.multiplyScalar(0.32)).add(perpendicular), start.clone().add(direction.multiplyScalar(0.72)).sub(perpendicular), destination], false, "catmullrom", 0.55); startedAt = performance.now(); pauseUntil = performance.now() + duration; }
