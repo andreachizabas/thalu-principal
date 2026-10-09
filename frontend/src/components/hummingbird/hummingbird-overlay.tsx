@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { useEffect, useRef } from "react";
 import { hummingbirdConfig as config } from "./config";
 
-type FlowerTarget = { element: Element | null; group: THREE.Group; position: THREE.Vector3 };
+type FlowerTarget = { element: Element; position: THREE.Vector3 };
 type FlightMode = "travel" | "hover" | "feed";
 
 function featherShape(length: number, width: number, color: number) {
@@ -46,20 +46,20 @@ function createBird() {
   const beakMaterial = new THREE.MeshStandardMaterial({ color: 0x211819, roughness: 0.3, metalness: 0.38 });
 
   const torso = new THREE.Mesh(new THREE.SphereGeometry(0.49, 24, 18), bodyBlack);
-  torso.scale.set(1.34, 0.78, 0.72);
+  torso.scale.set(1.3, 0.6, 0.57);
   torso.rotation.z = -0.12;
   bird.add(torso);
 
   const breast = new THREE.Mesh(new THREE.SphereGeometry(0.38, 24, 18), pink);
-  breast.position.set(0.12, -0.12, 0.13);
-  breast.scale.set(0.86, 0.84, 0.64);
+  breast.position.set(0.1, -0.09, 0.11);
+  breast.scale.set(0.76, 0.68, 0.49);
   bird.add(breast);
 
   const headPivot = new THREE.Group();
   headPivot.position.set(0.35, 0.23, 0);
   bird.add(headPivot);
   const head = new THREE.Mesh(new THREE.SphereGeometry(0.31, 24, 18), bodyBlack);
-  head.scale.set(1.08, 0.98, 0.91);
+  head.scale.set(1.02, 0.91, 0.82);
   headPivot.add(head);
 
   const throat = new THREE.Mesh(new THREE.SphereGeometry(0.2, 20, 14), throatPink);
@@ -89,7 +89,7 @@ function createBird() {
   const tail = new THREE.Group();
   tail.position.set(-0.54, -0.02, 0);
   for (let index = -2; index <= 2; index += 1) {
-    const tailFeather = featherShape(0.88 - Math.abs(index) * 0.08, 0.19, index % 2 === 0 ? config.ink : config.deepRose);
+    const tailFeather = featherShape(0.88 - Math.abs(index) * 0.08, 0.14, index % 2 === 0 ? config.ink : config.deepRose);
     tailFeather.position.set(0, index * 0.058, index * 0.045);
     tailFeather.rotation.z = Math.PI + index * 0.07;
     tail.add(tailFeather);
@@ -109,27 +109,6 @@ function createBird() {
   bird.userData.head = headPivot;
   bird.userData.feet = feet;
   return bird;
-}
-
-function createFlower() {
-  const flower = new THREE.Group();
-  const petalMaterial = new THREE.MeshStandardMaterial({ color: 0xf2a39a, roughness: 0.62, side: THREE.DoubleSide });
-  const petalGeometry = new THREE.SphereGeometry(0.17, 14, 10);
-  for (let index = 0; index < 6; index += 1) {
-    const angle = (index / 6) * Math.PI * 2;
-    const petal = new THREE.Mesh(petalGeometry, petalMaterial);
-    petal.position.set(Math.cos(angle) * 0.16, Math.sin(angle) * 0.16, 0);
-    petal.scale.set(1.05, 0.58, 0.3);
-    petal.rotation.z = angle;
-    flower.add(petal);
-  }
-  const center = new THREE.Mesh(new THREE.SphereGeometry(0.095, 16, 12), new THREE.MeshStandardMaterial({ color: 0xffd37c, roughness: 0.35, emissive: 0x8a3f30, emissiveIntensity: 0.18 }));
-  flower.add(center);
-  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.026, 0.48, 8), new THREE.MeshStandardMaterial({ color: 0x465c38, roughness: 0.72 }));
-  stem.position.y = -0.38;
-  flower.add(stem);
-  flower.scale.setScalar(0.8);
-  return flower;
 }
 
 export function HummingbirdOverlay() {
@@ -202,44 +181,20 @@ export function HummingbirdOverlay() {
 
     function refreshFlowers() {
       const matching = new Set<Element>();
-      document.querySelectorAll<HTMLElement>("[class*='thalu-blossom']").forEach((element) => matching.add(element));
+      document.querySelectorAll<HTMLElement>("[data-hummingbird-flower], [class*='thalu-blossom']").forEach((element) => matching.add(element));
       document.querySelectorAll<HTMLImageElement>("img[src*='thalu-blossom']").forEach((element) => matching.add(element));
-      const visible: { element: Element | null; x: number; y: number; visible: boolean }[] = [...matching].map((element) => {
+      const visible = [...matching].map((element) => {
         const rect = element.getBoundingClientRect();
-        return { element, x: THREE.MathUtils.clamp(rect.left + rect.width * 0.58, 18, width - 18), y: THREE.MathUtils.clamp(rect.top + rect.height * 0.48, 18, height - 18), visible: rect.width > 12 && rect.height > 12 && rect.bottom > 0 && rect.top < height };
-      }).filter((target) => target.visible).slice(0, 5);
+        return { element, rect };
+      }).filter(({ rect }) => rect.width > 12 && rect.height > 12 && rect.bottom > 0 && rect.top < height).slice(0, 5);
 
-      if (visible.length === 0) {
-        visible.push(
-          { element: null, x: width * 0.14, y: height * 0.27, visible: true },
-          { element: null, x: width * 0.86, y: height * 0.68, visible: true },
-        );
-      }
-
-      while (flowers.length < visible.length) {
-        const group = createFlower();
-        scene.add(group);
-        flowers.push({ element: null, group, position: new THREE.Vector3() });
-      }
-      while (flowers.length > visible.length) {
-        const removed = flowers.pop();
-        if (removed) {
-          scene.remove(removed.group);
-          removed.group.traverse((object) => {
-            if (object instanceof THREE.Mesh) {
-              object.geometry.dispose();
-              const materials = Array.isArray(object.material) ? object.material : [object.material];
-              materials.forEach((material) => material.dispose());
-            }
-          });
-        }
-      }
-      visible.forEach((target, index) => {
-        const flower = flowers[index];
-        flower.element = target.element;
-        flower.position.copy(viewportPoint(target.x, target.y));
-        flower.group.position.copy(flower.position);
-      });
+      flowers.splice(0, flowers.length, ...visible.map(({ element, rect }) => ({
+        element,
+        position: viewportPoint(
+          THREE.MathUtils.clamp(rect.left + rect.width * 0.58, 18, width - 18),
+          THREE.MathUtils.clamp(rect.top + rect.height * 0.48, 18, height - 18),
+        ),
+      })));
     }
 
     function startFlight(destination: THREE.Vector3, duration: number, arrivalMode: FlightMode, flower: FlowerTarget | null = null) {
@@ -268,7 +223,6 @@ export function HummingbirdOverlay() {
 
     function autonomousFlight() {
       const eligible = flowers.filter((flower) => {
-        if (!flower.element) return true;
         const rect = flower.element.getBoundingClientRect();
         return rect.width > 0 && rect.bottom > 24 && rect.top < height - 24;
       });
@@ -369,10 +323,6 @@ export function HummingbirdOverlay() {
         if (now > nextTargetAt) autonomousFlight();
       }
 
-      flowers.forEach((flower, index) => {
-        flower.group.position.copy(flower.position);
-        flower.group.rotation.z = Math.sin(now * 0.0014 + index) * 0.08;
-      });
       renderer.render(scene, camera);
     }
 

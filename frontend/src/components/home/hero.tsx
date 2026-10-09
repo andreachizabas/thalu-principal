@@ -14,12 +14,14 @@ export function Hero() {
   return (
     <section className="relative overflow-hidden bg-salmon text-ink">
       <motion.div
+        data-hummingbird-flower
         className="pointer-events-none absolute right-[-1rem] top-10 z-0 h-[24rem] w-[24rem] bg-[url('/images/thalu-blossom.png')] bg-contain bg-center bg-no-repeat opacity-85 sm:h-[30rem] sm:w-[30rem] lg:right-[-4rem]"
         animate={reduceMotion ? undefined : { y: [0, -12, 0], rotate: [0, 3, 0] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         aria-hidden="true"
       />
       <motion.div
+        data-hummingbird-flower
         className="pointer-events-none absolute bottom-[-5rem] left-[-6rem] z-0 h-64 w-64 -scale-x-100 bg-[url('/images/thalu-blossom.png')] bg-contain bg-center bg-no-repeat opacity-65 sm:h-80 sm:w-80"
         animate={reduceMotion ? undefined : { y: [0, 10, 0], rotate: [0, -4, 0] }}
         transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
@@ -70,7 +72,7 @@ export function Hero() {
             animate={reduceMotion ? undefined : { y: [0, -8, 0] }}
             transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[url('/images/thalu-blossom.png')] bg-contain bg-center bg-no-repeat opacity-70" aria-hidden="true" />
+            <div data-hummingbird-flower className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[url('/images/thalu-blossom.png')] bg-contain bg-center bg-no-repeat opacity-70" aria-hidden="true" />
             <div className="relative z-10">
               <p className="text-xs font-bold uppercase tracking-[0.24em] text-salmon">Belleza a tu puerta</p>
               <h2 className="mt-4 max-w-xs font-display text-4xl font-semibold leading-[0.98] text-salmon sm:text-5xl">Tu momento de belleza, sin salir de casa.</h2>

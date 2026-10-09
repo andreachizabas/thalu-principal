@@ -1,6 +1,6 @@
 # Colibrí interactivo de ThaLú
 
-La experiencia usa Three.js en una capa `pointer-events: none` para no bloquear enlaces, botones ni formularios. El ave se construye con mallas tridimensionales articuladas para cuerpo, cabeza, ojos, pico, alas con plumas, cola y patas. Las alas baten durante el vuelo y la suspensión. El colibrí detecta decoraciones florales de la página, vuela hacia ellas con curvas Catmull-Rom, orienta el pico, simula la alimentación y después reanuda su recorrido. También responde a clics y toques, y respeta `prefers-reduced-motion`.
+La experiencia usa Three.js en una capa `pointer-events: none` para no bloquear enlaces, botones ni formularios. El ave se construye con mallas tridimensionales articuladas para cuerpo, cabeza, ojos, pico, alas con plumas, cola y patas. Las alas baten durante el vuelo y la suspensión. El colibrí detecta decoraciones florales existentes de la página, vuela hacia ellas con curvas Catmull-Rom, orienta el pico, simula la alimentación y después reanuda su recorrido. No agrega flores propias. También responde a clics y toques, y respeta `prefers-reduced-motion`.
 
 ## Modelo y licencia
 
