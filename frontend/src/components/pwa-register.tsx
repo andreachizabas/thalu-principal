@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { HummingbirdOverlay } from "@/components/hummingbird/hummingbird-overlay";
 
 export function PwaRegister() {
   useEffect(() => {
@@ -11,5 +12,5 @@ export function PwaRegister() {
     });
   }, []);
 
-  return null;
+  return <HummingbirdOverlay />;
 }
